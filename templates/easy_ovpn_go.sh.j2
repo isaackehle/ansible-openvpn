@@ -1,0 +1,9 @@
+
+cd {{ easy_openvpn_dir }}
+source vars
+./clean-all
+./build-ca  --batch
+./build-key-server server  --batch
+./build-dh
+
+openvpn --genkey --secret keys/ta.key
