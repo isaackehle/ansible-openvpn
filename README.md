@@ -35,18 +35,10 @@ do_server_config:   Server Configuration/Initialization
 ```YAML
 
   - hosts: all
- 
+
     vars: 
-
-    # for db_create, db_create_config is a YAML file that holds information about all databases that need
-    # to be created.  Required format is as follows (with typical roles displayed):
-    #
-    #  ---
-    # app_users:
-    #  - { db_name: "", user: "", pwd: "", roles: ["readWrite", "userAdmin"] } 
-
-    target_servers: []
-    dns_servers:    [] 
+        target_servers: []
+        dns_servers:    [] 
     
     server_init:    true
     
