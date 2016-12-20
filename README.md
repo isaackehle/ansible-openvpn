@@ -35,18 +35,10 @@ do_server_config:   Server Configuration/Initialization
 ```YAML
 
   - hosts: all
- 
+
     vars: 
-
-    # for db_create, db_create_config is a YAML file that holds information about all databases that need
-    # to be created.  Required format is as follows (with typical roles displayed):
-    #
-    #  ---
-    # app_users:
-    #  - { db_name: "", user: "", pwd: "", roles: ["readWrite", "userAdmin"] } 
-
-    target_servers: []
-    dns_servers:    [] 
+        target_servers: []
+        dns_servers:    [] 
     
     server_init:    true
     
@@ -65,11 +57,10 @@ Paul Kehle
 
 ### References
 
-# https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04
-# https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-16-04
-
-# https://help.ubuntu.com/14.04/serverguide/openvpn.html
-# http://superuser.com/questions/457020/openvpn-only-route-a-specific-ip-addresses-through-vpn
-# http://www.linuxfunda.com/2013/09/14/how-to-install-and-configure-an-open-vpn-with-nat-server-inside-aws-vpc/
-# http://serverfault.com/questions/497438/how-to-reset-ubuntu-12-04-iptables-to-default-without-locking-oneself-out
-# http://serverfault.com/questions/631037/how-to-route-only-specific-openvpn-traffic-through-a-openvpn-based-on-ip-filteri
+* https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04
+* https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-16-04
+* https://help.ubuntu.com/14.04/serverguide/openvpn.html
+* http://superuser.com/questions/457020/openvpn-only-route-a-specific-ip-addresses-through-vpn
+* http://www.linuxfunda.com/2013/09/14/how-to-install-and-configure-an-open-vpn-with-nat-server-inside-aws-vpc/
+* http://serverfault.com/questions/497438/how-to-reset-ubuntu-12-04-iptables-to-default-without-locking-oneself-out
+* http://serverfault.com/questions/631037/how-to-route-only-specific-openvpn-traffic-through-a-openvpn-based-on-ip-filteri
