@@ -1,0 +1,34 @@
+client
+dev tun
+proto udp
+
+#remote lportal01.ehps.ncsu.edu 1194
+#remote lportal02.ehps.ncsu.edu 1194
+
+{% for host in groups['portals']  %}
+remote {{ hostvars[host].ip_address }} 1194
+{% endfor %}
+
+remote-random
+resolv-retry infinite
+nobind
+user nobody
+group nogroup
+persist-key
+persist-tun
+
+;http-proxy-retry # retry on connection failures
+;http-proxy [proxy server] [proxy port #]
+
+comp-lzo
+verb 3
+
+key-direction 1
+;ns-cert-type server
+remote-cert-tls server
+tls-client
+auth SHA256
+keysize 256
+cipher AES-256-CBC
+tls-version-min 1.2
+tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"

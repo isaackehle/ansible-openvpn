@@ -1,0 +1,46 @@
+port 1194
+proto udp
+dev tun
+ca {{ovpn_keys_dir}}/{{ovpn_ca_cert_file}}
+cert {{ovpn_keys_dir}}/{{ovpn_srv_cert_file}}
+key {{ovpn_keys_dir}}/{{ovpn_srv_key_file}}
+dh {{ovpn_keys_dir}}/{{ovpn_dh_file}}
+server {{server_range}} {{server_netmask}}
+ifconfig-pool-persist ipp.txt
+
+tls-auth /etc/openvpn/keys/ta.key 0
+key-direction 0
+auth SHA256
+keysize 256
+cipher AES-256-CBC
+tls-version-min 1.2
+tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
+
+# DNS Entries
+{% for s in dns_servers %}
+push "dhcp-option DNS {{ s.ip_address }}" # {{ s.description }}
+{% endfor %}
+
+#push "redirect-gateway def1 bypass-dhcp"
+management localhost 7505
+
+#push "route-nopull" # Only the following servers use this portal
+
+# Target Servers
+{% for s in target_servers %}
+push "route {{ s.ip_address }} 255.255.255.255" # {{ s.description }}
+{% endfor %}
+
+client-to-client
+keepalive 10 120
+comp-lzo
+user nobody
+group nogroup
+persist-key
+persist-tun
+status /var/log/openvpn-status.log
+log /var/log/openvpn.log
+verb 6
+
+;log-append  /var/log/openvpn.log
+;mute 20

@@ -1,0 +1,14 @@
+---
+
+- include: ./server-init.yml
+  when: server_init|bool == true
+
+- include: ./server-config.yml
+  when: server_config|bool == true
+
+- include: ./server-cert-generate.yml
+  when: server_cert_gen|bool == true
+
+- include: ./server-cert-pull.yml
+  when: server_cert_pull|bool == true
+
