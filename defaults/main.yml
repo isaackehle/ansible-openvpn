@@ -7,3 +7,4 @@ server_cert_pull:   false
 easy_ovpn_init:     false
 client_cert_gen:    false
 client_cert_sync:   false
+client_deploy:      false
