@@ -1,7 +1,7 @@
 ---
 ovpn_dir:             /etc/openvpn
-ovpn_server_cfg_file: "{{ovpn_dir}}/server.conf"
-ovpn_keys_dir:        "{{ovpn_dir}}/keys"
+ovpn_server_cfg_file: "{{ ovpn_dir }}/server.conf"
+ovpn_keys_dir:        "{{ ovpn_dir }}/keys"
 ovpn_ca_cert_file:    "ca.crt"
 ovpn_ca_key_file:     "ca.key"
 ovpn_srv_cert_file:   "server.crt"
@@ -9,8 +9,11 @@ ovpn_srv_key_file:    "server.key"
 ovpn_dh_file:         "dh2048.pem"
 ovpn_ta_file:         "ta.key"
 
-easy_openvpn_dir:     ~/easy_ovpn
-#easy_openvpn_dir:     ~/openvpn-ca
+easy_openvpn_dir:     /home/{{ ansible_user }}/easy_ovpn
+
+easy_openvpn_vars:    "{{ easy_openvpn_dir }}/vars"
+easy_openvpn_keys:    "{{ easy_openvpn_dir }}/keys"
+certs_dir:            "{{ easy_openvpn_dir }}/certs"
 
 server_range:         10.8.0.0
 server_netmask:       255.255.255.0

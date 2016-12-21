@@ -8,7 +8,7 @@ dh {{ovpn_keys_dir}}/{{ovpn_dh_file}}
 server {{server_range}} {{server_netmask}}
 ifconfig-pool-persist ipp.txt
 
-tls-auth /etc/openvpn/keys/ta.key 0
+tls-auth {{ovpn_keys_dir}}/{{ovpn_ta_file}} 0
 key-direction 0
 auth SHA256
 keysize 256

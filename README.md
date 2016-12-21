@@ -27,7 +27,12 @@ sc_domain_comp          Domain Component for the cert, if any
 
 Flags for which sections to run
 ```
-do_server_config:   Server Configuration/Initialization
+server_init:        Server Initialization
+server_config:      Server Configuration
+server_cert_gen:    Server Certificate Generation
+server_cert_pull:   Server Certificate Pull
+client_cert_gen:    Client Certificate Generation
+client_cert_sync:   Client Certificate synchronization
 ```
 
 ## Examples
@@ -44,6 +49,11 @@ do_server_config:   Server Configuration/Initialization
     
     roles:
       - { name: pgkehle.openvpn, server_init: true }
+      - { name: pgkehle.openvpn, server_config: true }
+      - { name: pgkehle.openvpn, server_cert_gen: true }
+      - { name: pgkehle.openvpn, server_cert_pull: true }
+      - { name: pgkehle.openvpn, client_cert_gen: true, target_host: localhost}
+      - { name: pgkehle.openvpn, client_cert_sync: true }
 ```
 
 ## License
@@ -64,3 +74,21 @@ Paul Kehle
 * http://www.linuxfunda.com/2013/09/14/how-to-install-and-configure-an-open-vpn-with-nat-server-inside-aws-vpc/
 * http://serverfault.com/questions/497438/how-to-reset-ubuntu-12-04-iptables-to-default-without-locking-oneself-out
 * http://serverfault.com/questions/631037/how-to-route-only-specific-openvpn-traffic-through-a-openvpn-based-on-ip-filteri
+
+* https://forums.openvpn.net/viewtopic.php?t=16862
+* https://community.openvpn.net/openvpn/wiki/Hardening
+* https://blog.g3rt.nl/openvpn-security-tips.html
+* https://wiki.mozilla.org/Security/Server_Side_TLS
+* https://www.privateinternetaccess.com/forum/discussion/3478/pfsense-openvpn-not-connected
+
+```
+TLS-DHE-RSA-WITH-AES-256-GCM-SHA384
+TLS-DHE-RSA-WITH-AES-256-CBC-SHA256
+TLS-DHE-RSA-WITH-AES-128-GCM-SHA256
+TLS-DHE-RSA-WITH-AES-128-CBC-SHA256
+
+commands:
+openvpn --show-digests
+openvpn --show-tls
+openssl x509 -text -in ca.crt
+```
