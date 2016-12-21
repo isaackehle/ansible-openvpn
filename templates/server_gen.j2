@@ -1,3 +1,4 @@
+#!/bin/bash
 
 cd {{ easy_openvpn_dir }}
 source vars
@@ -6,4 +7,4 @@ source vars
 ./build-key-server server  --batch
 ./build-dh
 
-openvpn --genkey --secret keys/ta.key
+openvpn --genkey --secret keys/{{ovpn_ta_file}}

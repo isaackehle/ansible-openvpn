@@ -1,0 +1,19 @@
+---
+
+- name: send keys directory to {{ ovpn_dir }}
+  become: true
+  synchronize:
+    mode: push
+    src: "{{ ovpn_base }}/keys"
+    dest: "{{ ovpn_dir }}"
+
+#- name: send keys directory to {{ easy_openvpn_dir }}
+#  become: false
+#  synchronize:
+#    mode: push
+#    src: "{{ ovpn_base }}/keys"
+#    dest: "{{ easy_openvpn_dir }}"
+
+#  with_items: "{{ groups['portals'] }}"
+#  when: inventory_hostname != item
+

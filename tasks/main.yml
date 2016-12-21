@@ -12,3 +12,9 @@
 - include: ./server-cert-pull.yml
   when: server_cert_pull|bool == true
 
+- include: ./client-cert-generate.yml
+  when: client_cert_gen|bool == true
+
+- include: ./client-cert-sync.yml
+  when: client_cert_sync|bool == true
+

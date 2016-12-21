@@ -1,11 +1,11 @@
 ---
 
 - name: Create local directory
-  local_action: file path="{{ovpn_base}}/certs" state=directory
+  local_action: file path="{{ovpn_base}}/server" state=directory
 
 - name: copy key files
   become: true
-  fetch: src="{{ovpn_keys_dir}}/{{item}}" dest="{{ovpn_base}}/certs/{{item}}" flat=true
+  fetch: src="{{ovpn_keys_dir}}/{{item}}" dest="{{ovpn_base}}/server/{{item}}" flat=true
   with_items:
     - "{{ovpn_ca_cert_file}}"
     - "{{ovpn_ca_key_file}}"

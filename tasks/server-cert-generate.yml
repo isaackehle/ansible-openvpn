@@ -8,8 +8,8 @@
   command: make-cadir "{{easy_openvpn_dir}}"
   become: false
 
-- name: Setup packet forwarding
-  lineinfile: dest="{{easy_openvpn_dir}}/vars" regexp={{item.needle}} line={{item.line}}
+- name: Change Key Data
+  lineinfile: dest="{{easy_openvpn_vars}}" regexp={{item.needle}} line={{item.line}}
   become: false
   with_items:
     - { needle: 'KEY_COUNTRY', line: 'export KEY_COUNTRY="{{sc_country}}"' }
@@ -21,13 +21,13 @@
     - { needle: 'KEY_NAME', line: 'export KEY_NAME="{{sc_domain_comp}}"' }
 
 - name: push script template
-  template: src=../templates/easy_ovpn_go.sh.j2 dest="/tmp/easy_ovpn_go.sh"
+  template: src=../templates/server_gen.sh.j2 dest="/tmp/server_gen.sh"
   become: false
 
 # TODO: Not fully tested
 
 #- name: Enable packet forwarding
-#  script: /tmp/easy_ovpn_go.sh
+#  script: /tmp/eash_opvn_server_gen.sh
 #  become: true
 #
 #- name: Create server key directory

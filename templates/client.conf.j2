@@ -2,11 +2,8 @@ client
 dev tun
 proto udp
 
-#remote lportal01.ehps.ncsu.edu 1194
-#remote lportal02.ehps.ncsu.edu 1194
-
 {% for host in groups['portals']  %}
-remote {{ hostvars[host].ip_address }} 1194
+remote {{ hostvars[host].server_fqdn }} 1194
 {% endfor %}
 
 remote-random
