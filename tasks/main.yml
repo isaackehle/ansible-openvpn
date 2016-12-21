@@ -21,3 +21,7 @@
 - include: ./client-cert-sync.yml
   when: client_cert_sync|bool == true
 
+- include: ./client-deploy.yml
+  when: client_deploy|bool == true
+  tags:
+    - deploy
