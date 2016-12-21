@@ -9,11 +9,10 @@ ovpn_srv_key_file:    "server.key"
 ovpn_dh_file:         "dh2048.pem"
 ovpn_ta_file:         "ta.key"
 
-easy_openvpn_dir:     /home/{{ ansible_user }}/easy_ovpn
-
-easy_openvpn_vars:    "{{ easy_openvpn_dir }}/vars"
-easy_openvpn_keys:    "{{ easy_openvpn_dir }}/keys"
-certs_dir:            "{{ easy_openvpn_dir }}/certs"
+easy_ovpn_dir:        /home/{{ ansible_user }}/easy_ovpn
+easy_ovpn_vars:       "{{ easy_ovpn_dir }}/vars"
+easy_ovpn_keys:       "{{ easy_ovpn_dir }}/keys"
+easy_ovpn_certs:      "{{ easy_ovpn_dir }}/certs"
 
 server_range:         10.8.0.0
 server_netmask:       255.255.255.0
