@@ -6,6 +6,9 @@
 - include: ./server-config.yml
   when: server_config|bool == true
 
+- include: ./easy-ovpn-init.yml
+  when: easy_ovpn_init|bool == true
+
 - include: ./server-cert-generate.yml
   when: server_cert_gen|bool == true
 

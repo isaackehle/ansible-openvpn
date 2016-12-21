@@ -7,13 +7,16 @@
     src: "{{ ovpn_base }}/keys"
     dest: "{{ ovpn_dir }}"
 
-#- name: send keys directory to {{ easy_openvpn_dir }}
-#  become: false
-#  synchronize:
-#    mode: push
-#    src: "{{ ovpn_base }}/keys"
-#    dest: "{{ easy_openvpn_dir }}"
+- name: Ensure proper permissions
+  become: true
+  file:
+    path: "{{ ovpn_keys_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "o-rx"
+    recurse: true
 
-#  with_items: "{{ groups['portals'] }}"
-#  when: inventory_hostname != item
-
+- name: restart openvpn service
+  become: true
+  service: name=openvpn state=restarted

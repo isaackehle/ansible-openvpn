@@ -1,24 +1,7 @@
 ---
 
-- name: Kill old easy_ovpn directory
-  file: path="{{easy_openvpn_dir}}" state=absent
-  become: false
-
-- name: Create the easy_ovpn directory
-  command: make-cadir "{{easy_openvpn_dir}}"
-  become: false
-
 - name: Change Key Data
-  lineinfile: dest="{{easy_openvpn_vars}}" regexp={{item.needle}} line={{item.line}}
-  become: false
-  with_items:
-    - { needle: 'KEY_COUNTRY', line: 'export KEY_COUNTRY="{{sc_country}}"' }
-    - { needle: 'KEY_PROVINCE', line: 'export KEY_PROVINCE="{{sc_state}}"' }
-    - { needle: 'KEY_CITY', line: 'export KEY_CITY="{{sc_locality}}"' }
-    - { needle: 'KEY_ORG', line: 'export KEY_ORG="{{sc_organization}}"' }
-    - { needle: 'KEY_OU', line: 'export KEY_OU="{{sc_ou}}"' }
-    - { needle: 'KEY_EMAIL', line: 'export KEY_EMAIL="{{sc_email}}"' }
-    - { needle: 'KEY_NAME', line: 'export KEY_NAME="{{sc_domain_comp}}"' }
+  include: easy-ovpn-init.yml
 
 - name: push script template
   template: src=../templates/server_gen.sh.j2 dest="/tmp/server_gen.sh"
@@ -31,12 +14,12 @@
 #  become: true
 #
 #- name: Create server key directory
-#  file: path="{{ovpn_keys_dir}}" state=present
+#  file: path="{{ ovpn_keys_dir }}" state=present
 #  become: true
 #
 #- name: copy key files
 #  become: true
-#  copy: remote_src=true src="{{easy_openvpn_dir}}/{{item}}" dest="{{ovpn_keys_dir}}/{{item}}"
+#  copy: remote_src=true src="{{ easy_ovpn_dir }}/{{item}}" dest="{{ ovpn_keys_dir }}/{{item}}"
 #  with_items:
 #    - "{{ovpn_ca_cert_file}}"
 #    - "{{ovpn_ca_key_file}}"

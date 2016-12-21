@@ -1,14 +1,14 @@
 port 1194
 proto udp
 dev tun
-ca {{ovpn_keys_dir}}/{{ovpn_ca_cert_file}}
-cert {{ovpn_keys_dir}}/{{ovpn_srv_cert_file}}
-key {{ovpn_keys_dir}}/{{ovpn_srv_key_file}}
-dh {{ovpn_keys_dir}}/{{ovpn_dh_file}}
+ca {{ ovpn_keys_dir }}/{{ovpn_ca_cert_file}}
+cert {{ ovpn_keys_dir }}/{{ovpn_srv_cert_file}}
+key {{ ovpn_keys_dir }}/{{ovpn_srv_key_file}}
+dh {{ ovpn_keys_dir }}/{{ovpn_dh_file}}
 server {{server_range}} {{server_netmask}}
 ifconfig-pool-persist ipp.txt
 
-tls-auth {{ovpn_keys_dir}}/{{ovpn_ta_file}} 0
+tls-auth {{ ovpn_keys_dir }}/{{ovpn_ta_file}} 0
 key-direction 0
 auth SHA256
 keysize 256

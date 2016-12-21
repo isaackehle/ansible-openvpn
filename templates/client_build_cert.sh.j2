@@ -1,34 +1,21 @@
 #!/bin/bash
 
-cat {{ easy_openvpn_dir }}/client.conf > {{ certs_dir }}/{{ cert_filename }}
+cat {{ easy_ovpn_dir }}/client.conf > {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-echo -e '<ca>' >> {{ certs_dir }}/{{ cert_filename }}
+echo -e '<ca>' >> {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-cat {{ ovpn_keys_dir }}/ca.crt | sudo tee -a {{ certs_dir }}/{{ cert_filename }}
+cat {{ ovpn_keys_dir }}/ca.crt | sudo tee -a {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-echo -e '</ca>\n<cert>' >> {{ certs_dir }}/{{ cert_filename }}
+echo -e '</ca>\n<cert>' >> {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-cat {{ easy_openvpn_keys }}/{{ target_fqdn }}.crt | sudo tee -a {{ certs_dir }}/{{ cert_filename }}
+cat {{ easy_ovpn_keys }}/{{ target_fqdn }}.crt | sudo tee -a {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-echo -e '</cert>\n<key>' >> {{ certs_dir }}/{{ cert_filename }}
+echo -e '</cert>\n<key>' >> {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-cat {{ easy_openvpn_keys }}/{{ target_fqdn }}.key | sudo tee -a {{ certs_dir }}/{{ cert_filename }}
+cat {{ easy_ovpn_keys }}/{{ target_fqdn }}.key | sudo tee -a {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-echo -e '</key>\n<tls-auth>' >> {{ certs_dir }}/{{ cert_filename }}
+echo -e '</key>\n<tls-auth>' >> {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-cat {{ easy_openvpn_keys }}/{{ ovpn_ta_file }} | sudo tee -a {{ certs_dir }}/{{ cert_filename }}
+cat {{ easy_ovpn_keys }}/{{ ovpn_ta_file }} | sudo tee -a {{ easy_ovpn_certs }}/{{ cert_filename }}
 
-echo -e '</tls-auth>' >> {{ certs_dir }}/{{ cert_filename }}
-
-#  cat {{ easy_openvpn_dir }}/client.conf \
-#               < (echo -e '<ca>') \
-#               {{ ovpn_keys_dir }}/ca.crt \
-#               < (echo -e '</ca>\n<cert>') \
-#               {{ ovpn_keys_dir }}/{{ target_fqdn }}.crt \
-#               < (echo -e '</cert>\n<key>') \
-#               {{ ovpn_keys_dir }}/{{ target_fqdn }}.key \
-#               < (echo -e '</key>\n<tls-auth>') \
-#               {{ ovpn_keys_dir }}/ta.key \
-#               < (echo -e '</tls-auth>') \
-#               >
-
+echo -e '</tls-auth>' >> {{ easy_ovpn_certs }}/{{ cert_filename }}

@@ -1,18 +1,10 @@
 ---
 
-- fail:
-  when: not target_server is defined or target_server == ""
-
-- name: Ensure {{ certs_dir }} exists
-  file: path="{{ certs_dir }}" state=directory
-  become: false
-
-- name: push the keys directory to {{ easy_openvpn_dir }}
-  become: false
-  synchronize:
-    mode: push
-    src: "{{ ovpn_base }}/keys"
-    dest: "{{ easy_openvpn_dir }}"
+- fail: msg="Please ensure '{{ item }}' is set"
+  when:
+    - not {{ item }} is defined or {{ item }} == ""
+  with_items:
+    - target_server
 
 - set_fact:
     target_vars:    "{{ hostvars[target_server] }}"
@@ -26,68 +18,62 @@
   when: target_server == 'localhost'
 
 - set_fact:
-    target_fqdn:            "{{host_long.stdout}}"
+    target_fqdn:    "{{host_long.stdout}}"
   when: target_server == 'localhost'
 
 - set_fact:
     cert_filename:  "{{ target_fqdn }}.ovpn"
 
-- name: Change Key Data
-  lineinfile: dest="{{easy_openvpn_vars}}" regexp={{item.needle}} line={{item.line}}
-  become: false
-  with_items:
-    - { needle: 'KEY_COUNTRY', line: 'export KEY_COUNTRY="{{sc_country}}"' }
-    - { needle: 'KEY_PROVINCE', line: 'export KEY_PROVINCE="{{sc_state}}"' }
-    - { needle: 'KEY_CITY', line: 'export KEY_CITY="{{sc_locality}}"' }
-    - { needle: 'KEY_ORG', line: 'export KEY_ORG="{{sc_organization}}"' }
-    - { needle: 'KEY_OU', line: 'export KEY_OU="{{sc_ou}}"' }
-    - { needle: 'KEY_EMAIL', line: 'export KEY_EMAIL="{{sc_email}}"' }
-    - { needle: 'KEY_NAME', line: 'export KEY_NAME="{{sc_domain_comp}}"' }
+- name: Check to see if file exists
+  connection: local
+  stat: path="{{ ovpn_base }}/certs/{{ cert_filename }}"
+  register: cert_stat
 
-- name: push config template
-  template: src=../templates/client.conf.j2 dest="{{ easy_openvpn_dir }}/client.conf"
-  become: false
+- debug: var=cert_stat
+
+- set_fact:
+    need_generate: "{{not cert_stat.stat.exists|bool}}"
+
+#- debug: var=need_generate
+
+- include: easy-ovpn-init.yml
+  when: need_generate|bool == true
 
 - name: push client key script
   template: src=../templates/client_gen.sh.j2 dest="/tmp/client_gen.sh"
   become: false
+  when: need_generate|bool == true
 
 - name: run the client key script
   command: bash /tmp/client_gen.sh
+  when: need_generate|bool == true
 
 - name: push client generation script
   template: src=../templates/client_build_cert.sh.j2 dest="/tmp/client_build_cert.sh"
   become: false
+  when: need_generate|bool == true
 
 - name: run the client generation script
   command: bash /tmp/client_build_cert.sh
+  when: need_generate|bool == true
 
-- name: copy keys in place
-  become: true
-  shell: cp {{ easy_openvpn_keys }}/* {{ ovpn_keys_dir }}
-
-- name: restart openvpn service
-  become: true
-  service: name=openvpn state=restarted
-
-- name: Create local directory
+- name: Ensure local private certs directory exists
   local_action: file path="{{ ovpn_base }}/certs" state=directory
+  when: need_generate|bool == true
 
 - name: copy certificate file to local
   become: true
-  fetch: src="{{ certs_dir }}/{{ cert_filename }}" dest="{{ ovpn_base }}/certs/{{ cert_filename }}" flat=true
-
-- name: kill the certificates file
-  file: path="{{ certs_dir }}/{{ cert_filename }}" state=absent
+  fetch: src="{{ easy_ovpn_certs }}/{{ cert_filename }}" dest="{{ ovpn_base }}/certs/{{ cert_filename }}" flat=true
+  when: need_generate|bool == true
 
 - name: copy updated keys directory to local
   become: true
+  when: need_generate|bool == true
   synchronize:
     mode: pull
-    src: "{{ ovpn_keys_dir }}"
+    src: "{{ easy_ovpn_keys }}"
     dest: "{{ ovpn_base }}"
 
-- name: delete keys directory on remote
-  become: true
-  file: path="{{ ovpn_keys_dir }}" state=absent
-
+- name: Kill old easy_ovpn directory
+  file: path="{{ easy_ovpn_dir }}" state=absent
+  become: false
