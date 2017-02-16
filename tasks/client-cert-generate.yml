@@ -4,22 +4,23 @@
   when:
     - not {{ item }} is defined or {{ item }} == ""
   with_items:
-    - target_server
+    - target_host
 
 - set_fact:
-    target_vars:    "{{ hostvars[target_server] }}"
+    target_vars:    "{{ hostvars[target_host] }}"
 
 - set_fact:
     target_fqdn:    "{{ target_vars.server_fqdn }}"
-  when: target_server != 'localhost'
+  when: target_host != 'localhost'
 
-- local_action: shell hostname
+- shell: hostname
+  connection: local
   register: host_long
-  when: target_server == 'localhost'
+  when: target_host == 'localhost'
 
 - set_fact:
     target_fqdn:    "{{host_long.stdout}}"
-  when: target_server == 'localhost'
+  when: target_host == 'localhost'
 
 - set_fact:
     cert_filename:  "{{ target_fqdn }}.ovpn"

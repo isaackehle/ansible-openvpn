@@ -28,7 +28,7 @@ management localhost 7505
 
 # Target Servers
 {% for s in target_servers %}
-push "route {{ s.ip_address }} 255.255.255.255" # {{ s.description }}
+push "route {{ s.ip_address }} {{ s.netmask }}" # {{ s.description }}
 {% endfor %}
 
 client-to-client

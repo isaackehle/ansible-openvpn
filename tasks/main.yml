@@ -1,27 +1,67 @@
 ---
 
+- fail: msg="Please ensure '{{ item.use }}' is set"
+  when:
+    - not {{ item.tst }} is defined or {{ item.tst }} == ""
+  with_items:
+    - {tst: group_name, use: 'Ansible Group Name of portal servers'}
+    - {tst: target_servers, use: 'List of servers to be added to OpenVPN portal list'}
+
+- debug: var={{item}}
+  with_items:
+    - group_name
+    - do_server_init
+    - do_server_config
+    - do_easy_ovpn_init
+    - do_server_cert_gen
+    - do_server_cert_pull
+    - do_client_cert_gen
+    - do_client_cert_sync
+    - do_client_deploy
+  tags:
+    - init
+    - config
+    - generate
+    - pull
+    - sync
+    - deploy
+
 - include: ./server-init.yml
-  when: server_init|bool == true
+  when: do_server_init|bool == true
+  tags:
+    - init
 
 - include: ./server-config.yml
-  when: server_config|bool == true
+  when: do_server_config|bool == true
+  tags:
+    - config
 
 - include: ./easy-ovpn-init.yml
-  when: easy_ovpn_init|bool == true
+  when: do_easy_ovpn_init|bool == true
+  tags:
+    - init
 
 - include: ./server-cert-generate.yml
-  when: server_cert_gen|bool == true
+  when: do_server_cert_gen|bool == true
+  tags:
+    - generate
 
 - include: ./server-cert-pull.yml
-  when: server_cert_pull|bool == true
+  when: do_server_cert_pull|bool == true
+  tags:
+    - pull
 
 - include: ./client-cert-generate.yml
-  when: client_cert_gen|bool == true
+  when: do_client_cert_gen|bool == true
+  tags:
+    - generate
 
 - include: ./client-cert-sync.yml
-  when: client_cert_sync|bool == true
+  when: do_client_cert_sync|bool == true
+  tags:
+    - sync
 
 - include: ./client-deploy.yml
-  when: client_deploy|bool == true
+  when: do_client_deploy|bool == true
   tags:
     - deploy

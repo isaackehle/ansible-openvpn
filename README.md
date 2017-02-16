@@ -8,10 +8,19 @@ Available on Ansible Galaxy: [pgkehle.openvpn](https://galaxy.ansible.com/pgkehl
 
 Host Definitions typically contain the following:
 
-```
-portals                 Ansible group of servers that are configured as OpenVPN portals
+```yaml
+group_name              Name of Ansible group of servers that are configured as OpenVPN portals
 
 target_servers          Listing of servers that are directed through the server
+
+- target_servers:
+  - description:    "description"
+    server_name:    "short name"
+    server_fqdn:    "fqdn"
+    ip_address:     "ip address (or range)"
+    netmask:        "255.255.255.255 or similar"
+
+
 dns_servers             Listing of DNS servers that are published when the client is connected
 
 sc_country              Country for the cert                        
@@ -25,35 +34,50 @@ sc_domain_comp          Domain Component for the cert, if any
 
 ```
 
-Flags for which sections to run
+Tags
+
+
+```yaml
+tags:
+  - init
+  - config
+  - pull
+  - generate
+  - sync
+  - deploy
+
 ```
-server_init:        Server Initialization
-server_config:      Server Configuration
-server_cert_gen:    Server Certificate Generation
-server_cert_pull:   Server Certificate Pull
-client_cert_gen:    Client Certificate Generation
-client_cert_sync:   Client Certificate synchronization
+
+Flags for which sections to run
+```yaml
+do_server_init:         Server Initialization
+do_server_config:       Server Configuration
+do_easy_ovpn_init:      Initialize the Easy OpenVPN directoryu
+do_server_cert_gen:     Server Certificate Generation
+do_server_cert_pull:    Server Certificate Pull
+do_client_cert_gen:     Client Certificate Generation (specify only one portal machine)
+do_client_cert_sync:    Client Certificate synchronization between servers
+do_client_deploy:       Install the packages and the certificate on the client
 ```
 
 ## Examples
 
 ```YAML
 
-  - hosts: all
-
+- hosts: all
     vars: 
         target_servers: []
         dns_servers:    [] 
-    
-    server_init:    true
-    
     roles:
-      - { name: pgkehle.openvpn, server_init: true }
-      - { name: pgkehle.openvpn, server_config: true }
-      - { name: pgkehle.openvpn, server_cert_gen: true }
-      - { name: pgkehle.openvpn, server_cert_pull: true }
-      - { name: pgkehle.openvpn, client_cert_gen: true, target_host: localhost}
-      - { name: pgkehle.openvpn, client_cert_sync: true }
+      - { name: pgkehle.openvpn, do_server_init: true }
+      - { name: pgkehle.openvpn, do_server_config: true }
+      - { name: pgkehle.openvpn, do_easy_ovpn_init: true }
+      - { name: pgkehle.openvpn, do_server_cert_gen: true }
+      - { name: pgkehle.openvpn, do_server_cert_pull: true }
+      - { name: pgkehle.openvpn, do_client_cert_gen: true, target_host: localhost}
+      - { name: pgkehle.openvpn, do_client_cert_gen: true, target_host: myhost}
+      - { name: pgkehle.openvpn, do_client_cert_sync: true }
+      - { name: pgkehle.openvpn, do_client_deploy: true }
 ```
 
 ## License
@@ -64,6 +88,12 @@ MIT
 
 Paul Kehle  
 @pgkehle ([twitter](https://twitter.com/pgkehle), [github](https://github.com/pgkehle), [linkedin](https://www.linkedin.com/in/pgkehle))
+
+## For local development testing
+
+```bash
+rsync -av ~/code/ansible-openvpn/* ~/.ansible/roles/pgkehle.openvpn
+```
 
 ### References
 
