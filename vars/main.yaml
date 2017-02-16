@@ -9,6 +9,9 @@ ovpn_srv_key_file:    "server.key"
 ovpn_dh_file:         "dh2048.pem"
 ovpn_ta_file:         "ta.key"
 
+ovpn_keys_dir_local:  "{{ ovpn_base }}/keys"
+ovpn_certs_dir_local: "{{ ovpn_base }}/certs"
+
 easy_ovpn_dir:        /home/{{ ansible_user }}/easy_ovpn
 easy_ovpn_vars:       "{{ easy_ovpn_dir }}/vars"
 easy_ovpn_keys:       "{{ easy_ovpn_dir }}/keys"

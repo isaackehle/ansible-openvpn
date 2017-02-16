@@ -1,7 +1,8 @@
 ---
 
 - name: Create local directory
-  local_action: file path="{{ ovpn_base }}/server" state=directory
+  file: path="{{ ovpn_base }}/server" state=directory
+  connection: local
 
 - name: copy key files
   become: true

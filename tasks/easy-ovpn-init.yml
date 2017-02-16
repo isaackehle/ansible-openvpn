@@ -1,8 +1,8 @@
 ---
 
-- name: Kill old easy_ovpn directory
+- name: Kill old easy_ovpn directory before recreate
   file: path="{{ easy_ovpn_dir }}" state=absent
-  become: false
+  become: true
 
 - name: Create the easy_ovpn directory
   command: make-cadir "{{ easy_ovpn_dir }}"
@@ -30,11 +30,11 @@
 #    dest: "{{ easy_ovpn_dir }}"
 #  delegate_to: "{{ inventory_hostname }}"
 
-- name: push the keys directory to {{ easy_ovpn_dir }}
+- name: Push the local keys directory to {{ easy_ovpn_dir }}
   become: false
   synchronize:
     mode: push
-    src: "{{ ovpn_base }}/keys"
+    src: "{{ ovpn_keys_dir_local }}"
     dest: "{{ easy_ovpn_dir }}"
 
 - name: push config template

@@ -30,39 +30,105 @@
   stat: path="{{ ovpn_base }}/certs/{{ cert_filename }}"
   register: cert_stat
 
-- debug: var=cert_stat
+#- debug: var=cert_stat
 
 - set_fact:
-    need_generate: "{{not cert_stat.stat.exists|bool}}"
+    need_generate: "{{not cert_stat.stat.exists|bool or force|bool == true}}"
 
 #- debug: var=need_generate
 
-- include: easy-ovpn-init.yml
+#- include: easy-ovpn-init.yml
+#  when: need_generate|bool == true
+
+- name: Push the local keys directory to {{ ovpn_dir }}
+  become: true
+  synchronize:
+    mode: push
+    delete: true
+    src: "{{ ovpn_keys_dir_local }}"
+    dest: "{{ easy_ovpn_keys }}"
   when: need_generate|bool == true
 
 - name: push client key script
   template: src=../templates/client_gen.sh.j2 dest="/tmp/client_gen.sh"
-  become: false
   when: need_generate|bool == true
 
 - name: run the client key script
   command: bash /tmp/client_gen.sh
   when: need_generate|bool == true
 
-- name: push client generation script
-  template: src=../templates/client_build_cert.sh.j2 dest="/tmp/client_build_cert.sh"
-  become: false
+- name: Generate client cert -- Start with "client.conf"
+  shell: cp {{ easy_ovpn_dir }}/client.conf {{ easy_ovpn_certs }}/{{ cert_filename }}
   when: need_generate|bool == true
+  become: true
 
-- name: run the client generation script
-  command: bash /tmp/client_build_cert.sh
+- name: Generate client cert -- Open <ca>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="<ca>"
   when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Add {{ ovpn_keys_dir }}/ca.crt
+  shell: cat {{ ovpn_keys_dir }}/ca.crt >> {{ easy_ovpn_certs }}/{{ cert_filename }}
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Close </ca>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="</ca>"
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Open <cert>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="<cert>"
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Add {{ easy_ovpn_keys }}/{{ target_fqdn }}.crt
+  shell: cat {{ easy_ovpn_keys }}/{{ target_fqdn }}.crt >> {{ easy_ovpn_certs }}/{{ cert_filename }}
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Close </cert>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="</cert>"
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Open <key>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="<key>"
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Add {{ easy_ovpn_keys }}/{{ target_fqdn }}.key
+  shell: cat {{ easy_ovpn_keys }}/{{ target_fqdn }}.key >> {{ easy_ovpn_certs }}/{{ cert_filename }}
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Close </key>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="</key>"
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Open <tls-auth>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="<tls-auth>"
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Add {{ easy_ovpn_keys }}/{{ ovpn_ta_file }}
+  shell: cat {{ easy_ovpn_keys }}/{{ ovpn_ta_file }} >> {{ easy_ovpn_certs }}/{{ cert_filename }}
+  when: need_generate|bool == true
+  become: true
+
+- name: Generate client cert -- Close </tls-auth>
+  lineinfile: dest="{{ easy_ovpn_certs }}/{{ cert_filename }}" line="</tls-auth>"
+  when: need_generate|bool == true
+  become: true
+
 
 - name: Ensure local private certs directory exists
-  local_action: file path="{{ ovpn_base }}/certs" state=directory
+  file: path="{{ ovpn_base }}/certs" state=directory
+  connection: local
   when: need_generate|bool == true
 
-- name: copy certificate file to local
+- name: copy certificate file to localhost
   become: true
   fetch: src="{{ easy_ovpn_certs }}/{{ cert_filename }}" dest="{{ ovpn_base }}/certs/{{ cert_filename }}" flat=true
   when: need_generate|bool == true
@@ -75,6 +141,6 @@
     src: "{{ easy_ovpn_keys }}"
     dest: "{{ ovpn_base }}"
 
-- name: Kill old easy_ovpn directory
-  file: path="{{ easy_ovpn_dir }}" state=absent
-  become: false
+#- name: Kill old easy_ovpn directory
+#  file: path="{{ easy_ovpn_dir }}" state=absent
+#  become: false

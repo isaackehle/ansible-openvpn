@@ -1,10 +1,11 @@
 ---
 
-- name: send keys directory to {{ ovpn_dir }}
+- name: Push the local keys directory to {{ ovpn_dir }}
   become: true
   synchronize:
     mode: push
-    src: "{{ ovpn_base }}/keys"
+    delete: true
+    src: "{{ ovpn_keys_dir_local }}"
     dest: "{{ ovpn_dir }}"
 
 - name: Ensure proper permissions

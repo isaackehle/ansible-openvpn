@@ -45,6 +45,7 @@ tags:
   - generate
   - sync
   - deploy
+  - kill
 
 ```
 
@@ -52,12 +53,21 @@ Flags for which sections to run
 ```yaml
 do_server_init:         Server Initialization
 do_server_config:       Server Configuration
-do_easy_ovpn_init:      Initialize the Easy OpenVPN directoryu
 do_server_cert_gen:     Server Certificate Generation
 do_server_cert_pull:    Server Certificate Pull
+do_easy_ovpn_init:      Initialize the Easy OpenVPN directoryu
 do_client_cert_gen:     Client Certificate Generation (specify only one portal machine)
 do_client_cert_sync:    Client Certificate synchronization between servers
+do_easy_ovpn_kill:      Kill the Easy OpenVPN directoryu
 do_client_deploy:       Install the packages and the certificate on the client
+
+force:                  Force the command to happen
+
+    For client cert generate:
+      - Local keys directory is cleaned of the one being generated in `index` 
+      - `serial` contains an appropriate number.  
+      - serialized `.pem` files are removed
+      
 ```
 
 ## Examples
