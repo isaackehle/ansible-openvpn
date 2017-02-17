@@ -1,14 +1,5 @@
 ---
 
 group_name:             ""
-do_server_init:         false
-do_server_config:       false
-do_server_cert_gen:     false
-do_server_cert_pull:    false
-do_easy_ovpn_init:      false
-do_easy_ovpn_kill:      false
-do_client_cert_gen:     false
-do_client_cert_sync:    false
-do_client_deploy:       false
 
 force:                  false

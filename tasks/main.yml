@@ -16,46 +16,28 @@
     - kill
 
 - include: ./server-init.yml
-  when: do_server_init|bool == true
-  tags:
-    - init
+  tags: ['server_init']
 
 - include: ./server-config.yml
-  when: do_server_config|bool == true
-  tags:
-    - config
+  tags: ['server_config']
 
 - include: ./server-cert-generate.yml
-  when: do_server_cert_gen|bool == true
-  tags:
-    - generate
+  tags: ['server_cert_gen']
 
 - include: ./server-cert-pull.yml
-  when: do_server_cert_pull|bool == true
-  tags:
-    - pull
+  tags: ['server_cert_pull']
 
 - include: ./easy-ovpn-init.yml
-  when: do_easy_ovpn_init|bool == true
-  tags:
-    - init
+  tags: ['easy_ovpn_init']
 
 - include: ./client-cert-generate.yml
-  when: do_client_cert_gen|bool == true
-  tags:
-    - generate
+  tags: ['client_cert_gen']
 
 - include: ./client-cert-sync.yml
-  when: do_client_cert_sync|bool == true
-  tags:
-    - sync
+  tags: ['client_cert_sync']
 
 - include: ./easy-ovpn-kill.yml
-  when: do_easy_ovpn_kill|bool == true
-  tags:
-    - kill
+  tags: ['easy_ovpn_kill']
 
 - include: ./client-deploy.yml
-  when: do_client_deploy|bool == true
-  tags:
-    - deploy
+  tags: ['client_deploy']

@@ -34,33 +34,22 @@ sc_domain_comp          Domain Component for the cert, if any
 
 ```
 
-Tags
-
+## Tags
 
 ```yaml
-tags:
-  - init
-  - config
-  - pull
-  - generate
-  - sync
-  - deploy
-  - kill
-
+server_init:         Server Initialization
+server_config:       Server Configuration
+server_cert_gen:     Server Certificate Generation
+server_cert_pull:    Server Certificate Pull
+easy_ovpn_init:      Initialize the Easy OpenVPN directoryu
+client_cert_gen:     Client Certificate Generation (specify only one portal machine)
+client_cert_sync:    Client Certificate synchronization between servers
+easy_ovpn_kill:      Kill the Easy OpenVPN directoryu
+client_deploy:       Install the packages and the certificate on the client
 ```
 
-Flags for which sections to run
+## Flags for which sections to run
 ```yaml
-do_server_init:         Server Initialization
-do_server_config:       Server Configuration
-do_server_cert_gen:     Server Certificate Generation
-do_server_cert_pull:    Server Certificate Pull
-do_easy_ovpn_init:      Initialize the Easy OpenVPN directoryu
-do_client_cert_gen:     Client Certificate Generation (specify only one portal machine)
-do_client_cert_sync:    Client Certificate synchronization between servers
-do_easy_ovpn_kill:      Kill the Easy OpenVPN directoryu
-do_client_deploy:       Install the packages and the certificate on the client
-
 force:                  Force the command to happen
 
     For client cert generate:
@@ -72,24 +61,26 @@ force:                  Force the command to happen
 
 ## Examples
 
-```YAML
-
+```yaml
 - hosts: all
     vars: 
         target_servers: []
         dns_servers:    [] 
     roles:
-      - { name: pgkehle.openvpn, do_server_init: true }
-      - { name: pgkehle.openvpn, do_server_config: true }
-      - { name: pgkehle.openvpn, do_easy_ovpn_init: true }
-      - { name: pgkehle.openvpn, do_server_cert_gen: true }
-      - { name: pgkehle.openvpn, do_server_cert_pull: true }
-      - { name: pgkehle.openvpn, do_client_cert_gen: true, target_host: localhost}
-      - { name: pgkehle.openvpn, do_client_cert_gen: true, target_host: myhost}
-      - { name: pgkehle.openvpn, do_client_cert_sync: true }
-      - { name: pgkehle.openvpn, do_client_deploy: true }
+      - { name: pgkehle.openvpn }
 ```
 
+```bash
+    ansible-playbook myplaybook.yml -t server_init
+    ansible-playbook myplaybook.yml -t server_config
+    ansible-playbook myplaybook.yml -t easy_ovpn_init
+    ansible-playbook myplaybook.yml -t server_cert_gen
+    ansible-playbook myplaybook.yml -t server_cert_pull
+    ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=localhost'
+    ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=myhost'
+    ansible-playbook myplaybook.yml -t client_cert_sync
+    ansible-playbook myplaybook.yml -t client_deploy
+```
 ## License
 
 MIT
