@@ -21,7 +21,16 @@ tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-G
 push "dhcp-option DNS {{ s.ip_address }}" # {{ s.description }}
 {% endfor %}
 
+# If enabled, this directive will configure
+# all clients to redirect their default
+# network gateway through the VPN, causing
+# all IP traffic such as web browsing and
+# and DNS lookups to go through the VPN
+# (The OpenVPN server machine may need to NAT
+# or bridge the TUN/TAP interface to the internet
+# in order for this to work properly).
 #push "redirect-gateway def1 bypass-dhcp"
+
 management localhost 7505
 
 #push "route-nopull" # Only the following servers use this portal

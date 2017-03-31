@@ -71,15 +71,15 @@ force:                  Force the command to happen
 ```
 
 ```bash
-    ansible-playbook myplaybook.yml -t server_init
-    ansible-playbook myplaybook.yml -t server_config
-    ansible-playbook myplaybook.yml -t easy_ovpn_init
-    ansible-playbook myplaybook.yml -t server_cert_gen
-    ansible-playbook myplaybook.yml -t server_cert_pull
-    ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=localhost'
-    ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=myhost'
-    ansible-playbook myplaybook.yml -t client_cert_sync
-    ansible-playbook myplaybook.yml -t client_deploy
+ansible-playbook myplaybook.yml -t server_init
+ansible-playbook myplaybook.yml -t server_config
+ansible-playbook myplaybook.yml -t easy_ovpn_init
+ansible-playbook myplaybook.yml -t server_cert_gen
+ansible-playbook myplaybook.yml -t server_cert_pull
+ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=localhost'
+ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=myhost'
+ansible-playbook myplaybook.yml -t client_cert_sync
+ansible-playbook myplaybook.yml -t client_deploy
 ```
 ## License
 
