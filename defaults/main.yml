@@ -2,4 +2,8 @@
 
 group_name:             ""
 
+flags:
+  - none
+
 force:                  false
+

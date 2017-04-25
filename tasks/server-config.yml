@@ -5,3 +5,6 @@
   become: true
 
 
+- name: restart openvpn service
+  become: true
+  service: name=openvpn state=restarted
