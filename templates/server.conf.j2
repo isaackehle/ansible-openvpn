@@ -15,7 +15,6 @@ keysize 256
 cipher AES-256-CBC
 tls-version-min 1.2
 tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
-management localhost 7505
 allow-pull-fqdn
 
 # DNS Entries
@@ -28,7 +27,11 @@ push "dhcp-option DNS {{ s.ip_address }}" # {{ s.description }}
 # (The OpenVPN server machine may need to NAT or bridge the TUN/TAP interface to the internet in order for this to work properly).
 #push "redirect-gateway def1 bypass-dhcp"
 
-#push "route-nopull" # Only the following servers use this portal
+management localhost 7505
+
+# Only the following servers use this portal
+#push "route-nopull"
+
 
 # Target Servers
 {% for s in target_servers %}
