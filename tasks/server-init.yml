@@ -10,7 +10,7 @@
     - openvpn
     - easy-rsa
 
-- include: server-config.yml
+- include_tasks: server-config.yml
 
 - name: Setup packet forwarding
   lineinfile:
@@ -56,4 +56,4 @@
   with_items:
     - ufw enable
 
-#- include: server-cert-generate.yml
+#- include_tasks: server-cert-generate.yml

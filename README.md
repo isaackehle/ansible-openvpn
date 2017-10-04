@@ -1,4 +1,4 @@
-# Ansible: openvpn
+# Ansible Role - openvpn
 
 Installation and Configuring of OpenVPN
 
@@ -93,7 +93,7 @@ Paul Kehle
 ## For local development testing
 
 ```bash
-rsync -av ~/code/ansible-openvpn/* ~/.ansible/roles/pgkehle.openvpn
+rsync -av --delete ~/code/ansible-openvpn/* ~/.ansible/roles/pgkehle.openvpn
 ```
 
 ### References

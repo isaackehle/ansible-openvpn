@@ -37,7 +37,7 @@
 
 #- debug: var=need_generate
 
-#- include: easy-ovpn-init.yml
+#- include_tasks: easy-ovpn-init.yml
 #  when: need_generate|bool == true
 
 - name: Push the local keys directory to {{ ovpn_dir }}

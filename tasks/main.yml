@@ -9,38 +9,38 @@
   tags:
     - all
 
-- include: ./server-init.yml
+- include_tasks: ./server-init.yml
   when: ((['server_init'] | intersect(flags)) | length > 0)
   tags: ['server_init']
 
-- include: ./server-config.yml
+- include_tasks: ./server-config.yml
   when: ((['server_config'] | intersect(flags)) | length > 0)
   tags: ['server_config']
 
-- include: ./server-cert-generate.yml
+- include_tasks: ./server-cert-generate.yml
   when: ((['server_cert_gen'] | intersect(flags)) | length > 0)
   tags: ['server_cert_gen']
 
-- include: ./server-cert-pull.yml
+- include_tasks: ./server-cert-pull.yml
   when: ((['server_cert_pull'] | intersect(flags)) | length > 0)
   tags: ['server_cert_pull']
 
-- include: ./easy-ovpn-init.yml
+- include_tasks: ./easy-ovpn-init.yml
   when: ((['easy_ovpn_init'] | intersect(flags)) | length > 0)
   tags: ['easy_ovpn_init']
 
-- include: ./client-cert-generate.yml
+- include_tasks: ./client-cert-generate.yml
   when: ((['client_cert_gen'] | intersect(flags)) | length > 0)
   tags: ['client_cert_gen']
 
-- include: ./client-cert-sync.yml
+- include_tasks: ./client-cert-sync.yml
   when: ((['client_cert_sync'] | intersect(flags)) | length > 0)
   tags: ['client_cert_sync']
 
-- include: ./easy-ovpn-kill.yml
+- include_tasks: ./easy-ovpn-kill.yml
   when: ((['easy_ovpn_kill'] | intersect(flags)) | length > 0)
   tags: ['easy_ovpn_kill']
 
-- include: ./client-deploy.yml
+- include_tasks: ./client-deploy.yml
   when: ((['client_deploy'] | intersect(flags)) | length > 0)
   tags: ['client_deploy']

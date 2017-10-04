@@ -1,7 +1,7 @@
 ---
 
 - name: Change Key Data
-  include: easy-ovpn-init.yml
+  include_tasks: easy-ovpn-init.yml
 
 - name: push script template
   template: src=../templates/server_gen.sh.j2 dest="/tmp/server_gen.sh"
