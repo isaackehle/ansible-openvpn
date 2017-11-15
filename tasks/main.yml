@@ -2,9 +2,9 @@
 
 - fail: msg="Please ensure '{{ item.use }}' is set"
   when:
-    - not {{ item.tst }} is defined or {{ item.tst }} == ""
+    - not item is defined or not item.tst is defined or item.tst == ""
   with_items:
-    - {tst: group_name, use: 'Ansible Group Name of portal servers'}
+    - {tst: vpn_server_group_name, use: 'Ansible Group Name of portal servers'}
     - {tst: target_servers, use: 'List of servers to be added to OpenVPN portal list'}
   tags:
     - all

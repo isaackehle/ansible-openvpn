@@ -37,6 +37,8 @@
     src: "{{ ovpn_keys_dir_local }}"
     dest: "{{ easy_ovpn_dir }}"
 
+#- debug: var=groups[vpn_server_group_name]
+
 - name: push config template
   template: src=../templates/client.conf.j2 dest="{{ easy_ovpn_dir }}/client.conf"
   become: false

@@ -2,7 +2,7 @@ client
 dev tun
 proto udp
 
-{% for host in groups[group_name]  %}
+{% for host in groups[vpn_server_group_name]  %}
 remote {{ hostvars[host].server_fqdn }} 1194
 {% endfor %}
 

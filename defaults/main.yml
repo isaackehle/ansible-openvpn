@@ -1,6 +1,8 @@
 ---
 
-group_name:             ""
+vpn_server_group_name:  ""
+target_host:            ""
+local_hostname:         ""
 
 flags:
   - none

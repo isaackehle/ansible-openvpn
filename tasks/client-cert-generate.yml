@@ -2,27 +2,37 @@
 
 - fail: msg="Please ensure '{{ item }}' is set"
   when:
-    - not {{ item }} is defined or {{ item }} == ""
+    - not item is defined or not item.tst is defined or item.tst == ""
   with_items:
-    - target_host
+    - {tst: target_host, use: 'Target Host Variable'}
 
-- set_fact:
+- name: Set Target Variables
+  set_fact:
     target_vars:    "{{ hostvars[target_host] }}"
 
-- set_fact:
+- name: Set target_fqdn when target_host is not localhost
+  set_fact:
     target_fqdn:    "{{ target_vars.server_fqdn }}"
   when: target_host != 'localhost'
+
+- name: Set target_fqdn from local_hostname when set
+  set_fact:
+    target_fqdn:    "{{ local_hostname }}"
+  connection: local
+  when: target_host == 'localhost' and local_hostname != ''
 
 - shell: hostname
   connection: local
   register: host_long
-  when: target_host == 'localhost'
+  when: target_host == 'localhost' and local_hostname == ''
 
-- set_fact:
-    target_fqdn:    "{{host_long.stdout}}"
-  when: target_host == 'localhost'
+- name: Set target_fqdn from host_long
+  set_fact:
+    target_fqdn:    "{{ host_long.stdout }}"
+  when: target_host == 'localhost' and local_hostname == ''
 
-- set_fact:
+- name: Set certificate filename
+  set_fact:
     cert_filename:  "{{ target_fqdn }}.ovpn"
 
 - name: Check to see if file exists
@@ -35,7 +45,7 @@
 - set_fact:
     need_generate: "{{not cert_stat.stat.exists|bool or force|bool == true}}"
 
-#- debug: var=need_generate
+- debug: var=need_generate
 
 #- include_tasks: easy-ovpn-init.yml
 #  when: need_generate|bool == true

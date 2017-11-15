@@ -9,7 +9,7 @@ Available on Ansible Galaxy: [pgkehle.openvpn](https://galaxy.ansible.com/pgkehl
 Host Definitions typically contain the following:
 
 ```yaml
-group_name              Name of Ansible group of servers that are configured as OpenVPN portals
+vpn_server_group_name              Name of Ansible group of servers that are configured as OpenVPN portals
 
 target_servers          Listing of servers that are directed through the server
 
