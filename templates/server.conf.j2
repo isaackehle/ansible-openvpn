@@ -32,10 +32,11 @@ management localhost 7505
 # Only the following servers use this portal
 #push "route-nopull"
 
-
-# Target Servers
-{% for s in target_servers %}
-push "route {{ s.ip_address }} {{ s.netmask }}" # {{ s.description }}
+# Connected Systems
+{% for host in groups.all %}
+{% if hostvars[host].ip_address is defined and hostvars[host].netmask is defined %}
+push "route {{ hostvars[host].ip_address }} {{ hostvars[host].netmask }}" # {{ hostvars[host].description }}
+{% endif %}
 {% endfor %}
 
 client-to-client

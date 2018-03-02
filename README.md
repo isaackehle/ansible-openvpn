@@ -6,20 +6,18 @@ Available on Ansible Galaxy: [pgkehle.openvpn](https://galaxy.ansible.com/pgkehl
 
 ## Variables
 
+The template for the OpenVPN configuration uses the global inventory list.  Each inventory file must include the following in order for the host to be included:
+* ip_address
+* netmask
+* description
+
+Note: I found that even though the ansible documentation says that groups.all and groups.ungrouped will give you all of the servers, unless I added my connected systems to a group, the servers were not listed in either group.
+
+
 Host Definitions typically contain the following:
 
 ```yaml
-vpn_server_group_name              Name of Ansible group of servers that are configured as OpenVPN portals
-
-target_servers          Listing of servers that are directed through the server
-
-- target_servers:
-  - description:    "description"
-    server_name:    "short name"
-    server_fqdn:    "fqdn"
-    ip_address:     "ip address (or range)"
-    netmask:        "255.255.255.255 or similar"
-
+vpn_server_group_name   Name of Ansible group of servers that are configured as OpenVPN portals (default = 'portals')
 
 dns_servers             Listing of DNS servers that are published when the client is connected
 
@@ -34,7 +32,14 @@ sc_domain_comp          Domain Component for the cert, if any
 
 ```
 
-## Tags
+## Tags/Flags
+
+I use a system of flags and tags that allow the calling playbook to specify which roles are run.
+As an example:
+```
+ansible-playbook playbooks/openvpn.yml --limit portals -e "{'flags': ['server_config']}" -t server_config
+```
+
 
 ```yaml
 server_init:         Server Initialization
@@ -46,17 +51,6 @@ client_cert_gen:     Client Certificate Generation (specify only one portal mach
 client_cert_sync:    Client Certificate synchronization between servers
 easy_ovpn_kill:      Kill the Easy OpenVPN directoryu
 client_deploy:       Install the packages and the certificate on the client
-```
-
-## Flags for which sections to run
-```yaml
-force:                  Force the command to happen
-
-    For client cert generate:
-      - Local keys directory is cleaned of the one being generated in `index` 
-      - `serial` contains an appropriate number.  
-      - serialized `.pem` files are removed
-      
 ```
 
 ## Examples
@@ -71,15 +65,15 @@ force:                  Force the command to happen
 ```
 
 ```bash
-ansible-playbook myplaybook.yml -t server_init
-ansible-playbook myplaybook.yml -t server_config
-ansible-playbook myplaybook.yml -t easy_ovpn_init
-ansible-playbook myplaybook.yml -t server_cert_gen
-ansible-playbook myplaybook.yml -t server_cert_pull
-ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=localhost'
-ansible-playbook myplaybook.yml -t client_cert_gen -e 'target_host=myhost'
-ansible-playbook myplaybook.yml -t client_cert_sync
-ansible-playbook myplaybook.yml -t client_deploy
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_init']}" -t server_init
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_config']}" -t server_config
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['easy_ovpn_init']}" -t easy_ovpn_init
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_cert_gen']}" -t server_cert_gen
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_cert_pull']}" -t server_cert_pull
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_gen']}" -t client_cert_gen -e 'target_host=localhost'
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_gen']}" -t client_cert_gen -e 'target_host=myhost'
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_sync']}" -t client_cert_sync
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_deploy']}" -t client_deploy
 ```
 ## License
 
@@ -87,7 +81,7 @@ MIT
 
 ## Author Information
 
-Paul Kehle  
+Paul Kehle
 @pgkehle ([twitter](https://twitter.com/pgkehle), [github](https://github.com/pgkehle), [linkedin](https://www.linkedin.com/in/pgkehle))
 
 ## For local development testing
@@ -111,15 +105,3 @@ rsync -av --delete ~/code/ansible-openvpn/* ~/.ansible/roles/pgkehle.openvpn
 * https://blog.g3rt.nl/openvpn-security-tips.html
 * https://wiki.mozilla.org/Security/Server_Side_TLS
 * https://www.privateinternetaccess.com/forum/discussion/3478/pfsense-openvpn-not-connected
-
-```
-TLS-DHE-RSA-WITH-AES-256-GCM-SHA384
-TLS-DHE-RSA-WITH-AES-256-CBC-SHA256
-TLS-DHE-RSA-WITH-AES-128-GCM-SHA256
-TLS-DHE-RSA-WITH-AES-128-CBC-SHA256
-
-commands:
-openvpn --show-digests
-openvpn --show-tls
-openssl x509 -text -in ca.crt
-```

@@ -1,8 +1,8 @@
 ---
 
-vpn_server_group_name:  ""
-target_host:            ""
-local_hostname:         ""
+vpn_server_group_name:        "portals"
+target_host:                  ""
+local_hostname:               ""
 
 flags:
   - none
