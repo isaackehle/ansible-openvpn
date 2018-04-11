@@ -70,8 +70,7 @@ ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_config']}" -t serv
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['easy_ovpn_init']}" -t easy_ovpn_init
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_cert_gen']}" -t server_cert_gen
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_cert_pull']}" -t server_cert_pull
-ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_gen']}" -t client_cert_gen -e 'target_host=localhost'
-ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_gen']}" -t client_cert_gen -e 'target_host=myhost'
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_gen'], 'target_host': 'localhost', 'local_hostname': 'myhost.local' }" -t client_cert_gen
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_sync']}" -t client_cert_sync
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_deploy']}" -t client_deploy
 ```

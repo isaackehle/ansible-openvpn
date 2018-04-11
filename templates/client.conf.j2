@@ -17,7 +17,6 @@ persist-tun
 ;http-proxy-retry # retry on connection failures
 ;http-proxy [proxy server] [proxy port #]
 
-comp-lzo
 verb 3
 
 key-direction 1
@@ -25,7 +24,6 @@ key-direction 1
 remote-cert-tls server
 tls-client
 auth SHA256
-keysize 256
 cipher AES-256-CBC
 tls-version-min 1.2
 tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
