@@ -7,7 +7,7 @@ Available on Ansible Galaxy: [pgkehle.openvpn](https://galaxy.ansible.com/pgkehl
 ## Variables
 
 The template for the OpenVPN configuration uses the global inventory list.  Each inventory file must include the following in order for the host to be included:
-* ip_address
+* subnet
 * netmask
 * description
 

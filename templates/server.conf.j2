@@ -34,8 +34,8 @@ management localhost 7505
 
 # Connected Systems
 {% for host in groups.all %}
-{% if hostvars[host].ip_address is defined and hostvars[host].netmask is defined %}
-push "route {{ hostvars[host].ip_address }} {{ hostvars[host].netmask }}" # {{ hostvars[host].description }}
+{% if hostvars[host].subnet is defined and hostvars[host].netmask is defined %}
+push "route {{ hostvars[host].subnet }} {{ hostvars[host].netmask }}" # {{ hostvars[host].description }}
 {% endif %}
 {% endfor %}
 
