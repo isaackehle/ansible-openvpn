@@ -6,9 +6,12 @@
   with_items:
     - {tst: target_host, use: 'Target Host Variable'}
 
+
 - name: Set Target Variables
   set_fact:
     target_vars:    "{{ hostvars[target_host] }}"
+
+#- debug: var=target_vars
 
 - name: Set target_fqdn when target_host is not localhost
   set_fact:
@@ -55,7 +58,7 @@
   synchronize:
     mode: push
     delete: true
-    src: "{{ ovpn_keys_dir_local }}"
+    src: "{{ ovpn_keys_dir_local }}/"
     dest: "{{ easy_ovpn_keys }}"
   when: need_generate|bool == true
 
@@ -77,7 +80,7 @@
   when: need_generate|bool == true
   become: true
 
-- name: Generate client cert -- Add {{ ovpn_keys_dir }}/ca.crt
+- name: Generate client cert -- Add {{ ovpn_keys_dir }}/ca.crt to {{ easy_ovpn_certs }}/{{ cert_filename }}
   shell: cat {{ ovpn_keys_dir }}/ca.crt >> {{ easy_ovpn_certs }}/{{ cert_filename }}
   when: need_generate|bool == true
   become: true
@@ -132,7 +135,6 @@
   when: need_generate|bool == true
   become: true
 
-
 - name: Ensure local private certs directory exists
   file: path="{{ ovpn_base }}/certs" state=directory
   connection: local
@@ -148,8 +150,8 @@
   when: need_generate|bool == true
   synchronize:
     mode: pull
-    src: "{{ easy_ovpn_keys }}"
-    dest: "{{ ovpn_base }}"
+    src: "{{ easy_ovpn_keys }}/"
+    dest: "{{ ovpn_keys_dir_local }}"
 
 #- name: Kill old easy_ovpn directory
 #  file: path="{{ easy_ovpn_dir }}" state=absent

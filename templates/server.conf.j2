@@ -11,7 +11,6 @@ ifconfig-pool-persist ipp.txt
 tls-auth {{ ovpn_keys_dir }}/{{ovpn_ta_file}} 0
 key-direction 0
 auth SHA256
-keysize 256
 cipher AES-256-CBC
 tls-version-min 1.2
 tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"

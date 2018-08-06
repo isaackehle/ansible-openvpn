@@ -34,8 +34,8 @@
   become: false
   synchronize:
     mode: push
-    src: "{{ ovpn_keys_dir_local }}"
-    dest: "{{ easy_ovpn_dir }}"
+    src: "{{ ovpn_keys_dir_local }}/"
+    dest: "{{ easy_ovpn_keys }}"
 
 #- debug: var=groups[vpn_server_group_name]
 
