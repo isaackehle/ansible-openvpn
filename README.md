@@ -83,12 +83,6 @@ MIT
 Paul Kehle
 @pgkehle ([twitter](https://twitter.com/pgkehle), [github](https://github.com/pgkehle), [linkedin](https://www.linkedin.com/in/pgkehle))
 
-## For local development testing
-
-```bash
-rsync -av --delete ~/code/ansible-openvpn/* ~/.ansible/roles/pgkehle.openvpn
-```
-
 ### References
 
 * https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04

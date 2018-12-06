@@ -6,12 +6,12 @@
   with_items:
     - {tst: target_host, use: 'Target Host Variable'}
 
-
 - name: Set Target Variables
   set_fact:
     target_vars:    "{{ hostvars[target_host] }}"
 
-#- debug: var=target_vars
+- debug: var=target_host
+- debug: var=target_vars
 
 - name: Set target_fqdn when target_host is not localhost
   set_fact:
