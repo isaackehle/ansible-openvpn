@@ -18,7 +18,7 @@ allow-pull-fqdn
 
 # DNS Entries
 {% for s in dns_servers %}
-push "dhcp-option DNS {{ s.ip_address }}" # {{ s.description }}
+push "dhcp-option DNS {{ s.network.ip }}" # {{ s.description }}
 {% endfor %}
 
 # If enabled, this directive will configure all clients to redirect their default
