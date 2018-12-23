@@ -19,7 +19,7 @@
 #
 #- name: copy key files
 #  become: true
-#  copy: remote_src=true src="{{ easy_ovpn_dir }}/{{item}}" dest="{{ ovpn_keys_dir }}/{{item}}"
+#  copy: remote_src=true src="{{ easy_ovpn_dir }}/{{ item }}" dest="{{ ovpn_keys_dir }}/{{ item }}"
 #  with_items:
 #    - "{{ovpn_ca_cert_file}}"
 #    - "{{ovpn_ca_key_file}}"

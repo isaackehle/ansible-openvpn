@@ -24,7 +24,7 @@
   become: true
 
 - name: Uncomplicated firewall
-  command: "{{item}}"
+  command: "{{ item }}"
   become: true
   with_items:
     - ufw allow ssh
@@ -51,7 +51,7 @@
   become: true
 
 - name: Uncomplicated firewall
-  command: "{{item}}"
+  command: "{{ item }}"
   become: true
   with_items:
     - ufw enable
