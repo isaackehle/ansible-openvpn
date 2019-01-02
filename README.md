@@ -59,7 +59,7 @@ client_deploy:       Install the packages and the certificate on the client
 - hosts: all
     vars: 
         target_servers: []
-        dns_servers:    [] 
+        dns_servers:    []
     roles:
       - { name: pgkehle.openvpn }
 ```

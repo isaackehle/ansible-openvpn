@@ -3,12 +3,10 @@
 
 - name: Install the packages
   apt:
-    name: "{{ item }}"
+    name: ['openvpn']
     state: present
     update_cache: yes
   become: true
-  with_items:
-    - openvpn
 
 - set_fact:
     cert_filename:  "{{ server_fqdn }}.ovpn"
