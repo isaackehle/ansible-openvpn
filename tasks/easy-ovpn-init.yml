@@ -1,7 +1,9 @@
 ---
 
 - name: Kill old easy_ovpn directory before recreate
-  file: path="{{ easy_ovpn_dir }}" state=absent
+  file: 
+    path: "{{ easy_ovpn_dir }}"
+    state: absent
   become: true
 
 - name: Create the easy_ovpn directory
@@ -9,7 +11,10 @@
   become: false
 
 - name: Change Key Data
-  lineinfile: dest="{{ easy_ovpn_vars }}" regexp={{ item.needle }} line={{ item.line }}
+  lineinfile: 
+    dest: "{{ easy_ovpn_vars }}" 
+    regexp: "{{ item.needle }}" 
+    line: "{{ item.line }}"
   become: false
   with_items:
     - { needle: 'KEY_COUNTRY', line: 'export KEY_COUNTRY="{{ cert_config.country }}"' }
@@ -21,7 +26,9 @@
     - { needle: 'KEY_NAME', line: 'export KEY_NAME="{{ cert_config.dc }}"' }
 
 - name: Create {{ easy_ovpn_certs }}
-  file: path="{{ easy_ovpn_certs }}" state=directory
+  file: 
+    path: "{{ easy_ovpn_certs }}" 
+    state: directory
   become: false
 
 #- name: Copy current keys to easy openvpn directory
@@ -40,6 +47,8 @@
 #- debug: var=groups[vpn_server_group_name]
 
 - name: push config template
-  template: src=../templates/client.conf.j2 dest="{{ easy_ovpn_dir }}/client.conf"
+  template: 
+    src: ../templates/client.conf.j2 
+    dest: "{{ easy_ovpn_dir }}/client.conf"
   become: false
 
