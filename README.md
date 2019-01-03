@@ -21,14 +21,16 @@ vpn_server_group_name   Name of Ansible group of servers that are configured as 
 
 dns_servers             Listing of DNS servers that are published when the client is connected
 
-sc_country              Country for the cert
-sc_locality             Locality for the cert
-sc_state                State for the cert
-sc_organization         Organization for the cert
-sc_ou                   Organizational Unit for the cert
-sc_email                Email for the cert
-sc_common_name          Common name for the cert, usually fqdn
-sc_domain_comp          Domain Component for the cert, if any
+cert_config
+    cn
+    country         Country for the cert
+    locality        Locality for the cert
+    state           State for the cert
+    organization    Organization for the cert
+    ou              Organizational Unit for the cert
+    email           Email for the cert
+    cn              Common name for the cert, usually fqdn
+    dc              Domain Component for the cert, if any
 
 ```
 
