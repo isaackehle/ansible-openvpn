@@ -21,7 +21,7 @@ cipher AES-256-CBC
 tls-version-min 1.2
 tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
 
-{% if ansible_host == 'localhost' %}
+{% if inventory_hostname == 'localhost' %}
 # Connected Systems for localhost client
 {% for h in groups.all %}
 {% if hostvars[h].openvpn is defined and hostvars[h].openvpn.subnet is defined and hostvars[h].openvpn.netmask is defined and hostvars[h].openvpn.client == true %}

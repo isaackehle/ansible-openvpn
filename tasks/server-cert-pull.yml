@@ -7,10 +7,11 @@
   connection: local
 
 - name: Copy files to local directory
-  become: true
   synchronize:
     src: "{{ ovpn_keys_dir }}/{{ item }}" 
     dest: "{{ ovpn_base }}/server/{{ item }}"
+    mode: pull
+  become: true
   with_items:
     - "{{ ovpn_ca_cert_file }}"
     - "{{ ovpn_ca_key_file }}"

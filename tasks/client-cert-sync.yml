@@ -3,10 +3,10 @@
 - name: Push the local keys directory to {{ ovpn_dir }}
   become: true
   synchronize:
-    mode: push
-    delete: true
     src: "{{ ovpn_keys_dir_local }}"
     dest: "{{ ovpn_dir }}"
+    mode: push
+    delete: true
 
 - name: Ensure proper permissions
   become: true

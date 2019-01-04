@@ -160,7 +160,8 @@
 - name: Pull the certificate file to localhost
   synchronize:
     src: "{{ easy_ovpn_certs }}/{{ cert_filename }}" 
-    dest: "{{ ovpn_base }}/certs/{{ cert_filename }}" 
+    dest: "{{ ovpn_base }}/certs/{{ cert_filename }}"
+    mode: pull
   become: true
   when: need_generate|bool == true
 
@@ -168,6 +169,6 @@
   become: true
   when: need_generate|bool == true
   synchronize:
-    mode: pull
     src: "{{ easy_ovpn_keys }}/"
     dest: "{{ ovpn_keys_dir_local }}"
+    mode: pull
