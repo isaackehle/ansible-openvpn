@@ -20,4 +20,6 @@
 
 - name: restart openvpn service
   become: true
-  service: name=openvpn state=restarted
+  service: 
+    name: openvpn 
+    state: restarted

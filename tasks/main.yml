@@ -38,6 +38,10 @@
   when: ((['client_cert_sync'] | intersect(flags)) | length > 0)
   tags: ['client_cert_sync']
 
+- include_tasks: ./client-cert-pull.yml
+  when: ((['client_cert_pull'] | intersect(flags)) | length > 0)
+  tags: ['client_cert_pull']
+
 - include_tasks: ./easy-ovpn-kill.yml
   when: ((['easy_ovpn_kill'] | intersect(flags)) | length > 0)
   tags: ['easy_ovpn_kill']
