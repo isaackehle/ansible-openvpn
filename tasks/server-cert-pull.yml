@@ -1,16 +1,20 @@
 ---
 
 - name: Create local directory
-  file: path="{{ ovpn_base }}/server" state=directory
+  file: 
+    path: "{{ ovpn_base }}/server" 
+    state: directory
   connection: local
 
-- name: copy key files
+- name: Copy files to local directory
   become: true
-  fetch: src="{{ ovpn_keys_dir }}/{{ item }}" dest="{{ovpn_base}}/server/{{ item }}" flat=true
+  synchronize:
+    src: "{{ ovpn_keys_dir }}/{{ item }}" 
+    dest: "{{ ovpn_base }}/server/{{ item }}"
   with_items:
-    - "{{ovpn_ca_cert_file}}"
-    - "{{ovpn_ca_key_file}}"
-    - "{{ovpn_srv_cert_file}}"
-    - "{{ovpn_srv_key_file}}"
-    - "{{ovpn_dh_file}}"
-    - "{{ovpn_ta_file}}"
+    - "{{ ovpn_ca_cert_file }}"
+    - "{{ ovpn_ca_key_file }}"
+    - "{{ ovpn_srv_cert_file }}"
+    - "{{ ovpn_srv_key_file }}"
+    - "{{ ovpn_dh_file }}"
+    - "{{ ovpn_ta_file }}"

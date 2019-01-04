@@ -21,9 +21,9 @@
 #  become: true
 #  copy: remote_src=true src="{{ easy_ovpn_dir }}/{{ item }}" dest="{{ ovpn_keys_dir }}/{{ item }}"
 #  with_items:
-#    - "{{ovpn_ca_cert_file}}"
-#    - "{{ovpn_ca_key_file}}"
-#    - "{{ovpn_srv_cert_file}}"
-#    - "{{ovpn_srv_key_file}}"
-#    - "{{ovpn_dh_file}}"
-#    - "{{ovpn_ta_file}}"
+#    - "{{ ovpn_ca_cert_file }}"
+#    - "{{ ovpn_ca_key_file }}"
+#    - "{{ ovpn_srv_cert_file }}"
+#    - "{{ ovpn_srv_key_file }}"
+#    - "{{ ovpn_dh_file }}"
+#    - "{{ ovpn_ta_file }}"

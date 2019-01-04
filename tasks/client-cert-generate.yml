@@ -45,7 +45,7 @@
 
 - name: Determine if the generation is needed
   set_fact:
-    need_generate: "{{not cert_stat.stat.exists|bool or force|bool == true}}"
+    need_generate: "{{ not cert_stat.stat.exists|bool or force|bool == true }}"
 
 #- include_tasks: easy-ovpn-init.yml
 #  when: need_generate|bool == true
@@ -157,11 +157,10 @@
   connection: local
   when: need_generate|bool == true
 
-- name: copy certificate file to localhost
-  fetch:
+- name: Pull the certificate file to localhost
+  synchronize:
     src: "{{ easy_ovpn_certs }}/{{ cert_filename }}" 
     dest: "{{ ovpn_base }}/certs/{{ cert_filename }}" 
-    flat: true
   become: true
   when: need_generate|bool == true
 
