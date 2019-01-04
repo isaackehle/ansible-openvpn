@@ -2,8 +2,8 @@ client
 dev tun
 proto udp
 
-{% for host in groups[vpn_server_group_name]  %}
-remote {{ hostvars[host].server_fqdn }} 1194
+{% for h in groups[vpn_server_group_name]  %}
+remote {{ hostvars[h].server_fqdn }} 1194
 {% endfor %}
 
 remote-random
@@ -11,18 +11,21 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-
-;http-proxy-retry # retry on connection failures
-;http-proxy [proxy server] [proxy port #]
-
 comp-lzo
 verb 3
-
 key-direction 1
-;ns-cert-type server
 remote-cert-tls server
 tls-client
 auth SHA256
 cipher AES-256-CBC
 tls-version-min 1.2
 tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
+
+{% if ansible_host == 'localhost' %}
+# Connected Systems for localhost client
+{% for h in groups.all %}
+{% if hostvars[h].openvpn is defined and hostvars[h].openvpn.subnet is defined and hostvars[h].openvpn.netmask is defined and hostvars[h].openvpn.client == true %}
+route {{ hostvars[h].openvpn.subnet }} {{ hostvars[h].openvpn.netmask }} # {{ hostvars[h].description }}
+{% endif %}
+{% endfor %}
+{% endif %}

@@ -8,9 +8,13 @@ Available on Ansible Galaxy: [pgkehle.openvpn](https://galaxy.ansible.com/pgkehl
 
 The template for the OpenVPN configuration uses the global inventory list.  Each inventory file must include the following in order for the host to be included:
 
-* subnet
-* netmask
-* description
+```yaml
+description:
+openvpn:
+  subnet: aaa.bbb.ccc.ddd
+  netmask: lll.mmm.nnn.ooo
+  client: true # or false
+```
 
 Note: I found that even though the ansible documentation says that groups.all and groups.ungrouped will give you all of the servers, unless I added my connected systems to a group, the servers were not listed in either group.
 
