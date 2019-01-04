@@ -9,14 +9,13 @@ remote {{ hostvars[host].server_fqdn }} 1194
 remote-random
 resolv-retry infinite
 nobind
-user nobody
-group nogroup
 persist-key
 persist-tun
 
 ;http-proxy-retry # retry on connection failures
 ;http-proxy [proxy server] [proxy port #]
 
+comp-lzo
 verb 3
 
 key-direction 1

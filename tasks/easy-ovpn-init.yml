@@ -31,24 +31,31 @@
     state: directory
   become: false
 
-#- name: Copy current keys to easy openvpn directory
-#  synchronize:
-#    src: "{{ ovpn_keys_dir }}"
-#    dest: "{{ easy_ovpn_dir }}"
-#  delegate_to: "{{ inventory_hostname }}"
-
-- name: Push the local keys directory to {{ easy_ovpn_dir }}
-  become: false
+- name: Synchronize the keys directory on the server
   synchronize:
-    mode: push
-    src: "{{ ovpn_keys_dir_local }}/"
-    dest: "{{ easy_ovpn_keys }}"
+    src: "{{ ovpn_keys_dir }}"
+    dest: "{{ easy_ovpn_dir }}"
+  delegate_to: "{{ inventory_hostname }}"
+  become: true
 
-#- debug: var=groups[vpn_server_group_name]
+# - name: Push the local keys directory to {{ easy_ovpn_dir }}
+#   synchronize:
+#     mode: push
+#     src: "{{ ovpn_keys_dir_local }}/"
+#     dest: "{{ easy_ovpn_keys }}"
 
-- name: push config template
+- name: Put the client config template in place
   template: 
-    src: ../templates/client.conf.j2 
+    src: ../templates/easy_ovpn/client.conf.j2 
     dest: "{{ easy_ovpn_dir }}/client.conf"
-  become: false
+
+- name: Set Permissions
+  file:
+    path: "{{ easy_ovpn_dir }}"
+    state: directory
+    mode: 0775
+    owner: "{{ lookup('env','USER') }}"
+    group: "{{ lookup('env','USER') }}"
+    recurse: true
+  become: true
 
