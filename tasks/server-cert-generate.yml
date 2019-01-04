@@ -4,7 +4,9 @@
   include_tasks: easy-ovpn-init.yml
 
 - name: push script template
-  template: src=../templates/server_gen.sh.j2 dest="/tmp/server_gen.sh"
+  template: 
+    src: ../templates/server_gen.sh.j2 
+    dest: /tmp/server_gen.sh
   become: false
 
 # TODO: Not fully tested
@@ -14,7 +16,9 @@
 #  become: true
 #
 #- name: Create server key directory
-#  file: path="{{ ovpn_keys_dir }}" state=present
+#  file: 
+#   path: "{{ ovpn_keys_dir }}" 
+#   state: present
 #  become: true
 #
 #- name: copy key files

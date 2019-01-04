@@ -37,7 +37,8 @@
     line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
   become: true
 
-- blockinfile:
+- name: Setup the nat rules
+  blockinfile:
     dest: /etc/ufw/before.rules
     block: |
       # NAT table rules
