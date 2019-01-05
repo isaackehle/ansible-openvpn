@@ -3,14 +3,13 @@
 
 - name: Install the packages
   apt:
-    name: "{{ item }}"
+    name: ['openvpn']
     state: present
     update_cache: yes
   become: true
-  with_items:
-    - openvpn
 
-- set_fact:
+- name: Basic Facts
+  set_fact:
     cert_filename:  "{{ server_fqdn }}.ovpn"
     client_file:    "/etc/openvpn/{{ server_fqdn }}.conf"
 
@@ -25,7 +24,10 @@
 
 - name: Set OpenVPN client to start on reboot
   become: true
-  lineinfile: dest="/etc/default/openvpn" regexp={{ item.needle }} line={{ item.line }}
+  lineinfile: 
+    dest: "/etc/default/openvpn" 
+    regexp: "{{ item.needle }}" 
+    line: "{{ item.line }}"
   with_items:
     - { needle: '#AUTOSTART="all"', line: 'AUTOSTART="all"' }
 

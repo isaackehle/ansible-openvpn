@@ -1,13 +1,14 @@
 ---
 
-- fail: msg="Please ensure '{{ item.use }}' is set"
+- name: Ensure Required Items
+  fail: 
+    msg: "Please ensure '{{ item.use }}' is set"
   when:
     - not item is defined or not item.tst is defined or item.tst == ""
   with_items:
     - {tst: vpn_server_group_name, use: 'Ansible Group Name of portal servers'}
     - {tst: target_servers, use: 'List of servers to be added to OpenVPN portal list'}
-  tags:
-    - all
+  tags: ['all']
 
 - include_tasks: ./server-init.yml
   when: ((['server_init'] | intersect(flags)) | length > 0)
@@ -36,6 +37,10 @@
 - include_tasks: ./client-cert-sync.yml
   when: ((['client_cert_sync'] | intersect(flags)) | length > 0)
   tags: ['client_cert_sync']
+
+- include_tasks: ./client-cert-pull.yml
+  when: ((['client_cert_pull'] | intersect(flags)) | length > 0)
+  tags: ['client_cert_pull']
 
 - include_tasks: ./easy-ovpn-kill.yml
   when: ((['easy_ovpn_kill'] | intersect(flags)) | length > 0)

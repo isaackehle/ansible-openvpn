@@ -1,0 +1,9 @@
+---
+
+- name: Pull the local keys directory from {{ ovpn_dir }}
+  become: true
+  synchronize:
+    src: "{{ ovpn_keys_dir_local }}"
+    dest: "{{ ovpn_dir }}"
+    mode: pull
+    delete: true

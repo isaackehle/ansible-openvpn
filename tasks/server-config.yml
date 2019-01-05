@@ -1,10 +1,17 @@
 ---
 
 - name: Push server configuration file
-  template: src=../templates/server.conf.j2 dest="{{ ovpn_server_cfg_file }}" owner=root group=root mode="0755"
+  template: 
+    src: ../templates/server.conf.j2 
+    dest: "{{ ovpn_server_cfg_file }}" 
+    owner: root 
+    group: root 
+    mode: "0755"
   become: true
 
 
 - name: restart openvpn service
   become: true
-  service: name=openvpn state=restarted
+  service: 
+    name: openvpn 
+    state: restarted

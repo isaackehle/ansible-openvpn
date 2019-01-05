@@ -1,7 +1,9 @@
 ---
 
 - name: Kill old easy_ovpn directory before recreate
-  file: path="{{ easy_ovpn_dir }}" state=absent
+  file: 
+    path: "{{ easy_ovpn_dir }}"
+    state: absent
   become: true
 
 - name: Create the easy_ovpn directory
@@ -9,37 +11,52 @@
   become: false
 
 - name: Change Key Data
-  lineinfile: dest="{{ easy_ovpn_vars }}" regexp={{ item.needle }} line={{ item.line }}
+  lineinfile: 
+    dest: "{{ easy_ovpn_vars }}" 
+    regexp: "{{ item.needle }}" 
+    line: "{{ item.line }}"
   become: false
   with_items:
-    - { needle: 'KEY_COUNTRY', line: 'export KEY_COUNTRY="{{sc_country}}"' }
-    - { needle: 'KEY_PROVINCE', line: 'export KEY_PROVINCE="{{sc_state}}"' }
-    - { needle: 'KEY_CITY', line: 'export KEY_CITY="{{sc_locality}}"' }
-    - { needle: 'KEY_ORG', line: 'export KEY_ORG="{{sc_organization}}"' }
-    - { needle: 'KEY_OU', line: 'export KEY_OU="{{sc_ou}}"' }
-    - { needle: 'KEY_EMAIL', line: 'export KEY_EMAIL="{{sc_email}}"' }
-    - { needle: 'KEY_NAME', line: 'export KEY_NAME="{{sc_domain_comp}}"' }
+    - { needle: 'KEY_COUNTRY', line: 'export KEY_COUNTRY={{ cert_config.country }}' }
+    - { needle: 'KEY_PROVINCE', line: 'export KEY_PROVINCE={{ cert_config.state }}' }
+    - { needle: 'KEY_CITY', line: 'export KEY_CITY={{ cert_config.locality }}' }
+    - { needle: 'KEY_ORG', line: 'export KEY_ORG={{ cert_config.organization }}' }
+    - { needle: 'KEY_OU', line: 'export KEY_OU={{ cert_config.ou }}' }
+    - { needle: 'KEY_EMAIL', line: 'export KEY_EMAIL={{ cert_config.email }}' }
+    - { needle: 'KEY_NAME', line: 'export KEY_NAME={{ cert_config.dc }}' }
+    - { needle: 'KEY_CONFIG', line: 'export KEY_CONFIG={{ easy_ovpn_dir }}/openssl-1.0.0.cnf' }
 
 - name: Create {{ easy_ovpn_certs }}
-  file: path="{{ easy_ovpn_certs }}" state=directory
+  file: 
+    path: "{{ easy_ovpn_certs }}" 
+    state: directory
   become: false
 
-#- name: Copy current keys to easy openvpn directory
-#  synchronize:
-#    src: "{{ ovpn_keys_dir }}"
-#    dest: "{{ easy_ovpn_dir }}"
-#  delegate_to: "{{ inventory_hostname }}"
-
-- name: Push the local keys directory to {{ easy_ovpn_dir }}
-  become: false
+- name: Synchronize the keys directory on the server
   synchronize:
-    mode: push
-    src: "{{ ovpn_keys_dir_local }}/"
-    dest: "{{ easy_ovpn_keys }}"
+    src: "{{ ovpn_keys_dir }}"
+    dest: "{{ easy_ovpn_dir }}"
+  delegate_to: "{{ inventory_hostname }}"
+  become: true
 
-#- debug: var=groups[vpn_server_group_name]
+# - name: Push the local keys directory to {{ easy_ovpn_dir }}
+#   synchronize:
+#     mode: push
+#     src: "{{ ovpn_keys_dir_local }}/"
+#     dest: "{{ easy_ovpn_keys }}"
 
-- name: push config template
-  template: src=../templates/client.conf.j2 dest="{{ easy_ovpn_dir }}/client.conf"
-  become: false
+- name: Put the client config template in place
+  template: 
+    src: ../templates/easy_ovpn/client.conf.j2 
+    dest: "{{ easy_ovpn_dir }}/client.conf"
+
+- name: Set Permissions
+  file:
+    path: "{{ easy_ovpn_dir }}"
+    state: directory
+    mode: 0775
+    owner: "{{ lookup('env','USER') }}"
+    group: "{{ lookup('env','USER') }}"
+    recurse: true
+  become: true
 
