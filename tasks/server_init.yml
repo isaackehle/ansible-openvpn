@@ -2,15 +2,14 @@
 
 - name: Install the packages
   apt:
-    name: "{{ item }}"
+    name: 
+      - openvpn
+      - easy-rsa
     state: present
     update_cache: yes
   become: true
-  with_items:
-    - openvpn
-    - easy-rsa
 
-- include_tasks: server-config.yml
+- include_tasks: server_config.yml
 
 - name: Setup packet forwarding
   lineinfile:
@@ -57,4 +56,4 @@
   with_items:
     - ufw enable
 
-#- include_tasks: server-cert-generate.yml
+#- include_tasks: server_cert_generate.yml

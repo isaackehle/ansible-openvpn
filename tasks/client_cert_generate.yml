@@ -47,9 +47,6 @@
   set_fact:
     need_generate: "{{ not cert_stat.stat.exists|bool or force|bool == true }}"
 
-#- include_tasks: easy-ovpn-init.yml
-#  when: need_generate|bool == true
-
 - name: Synchronize keys from {{ ovpn_keys_dir_local }} to {{ easy_ovpn_keys }}
   become: true
   synchronize:

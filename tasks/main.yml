@@ -10,31 +10,35 @@
     - {tst: target_servers, use: 'List of servers to be added to OpenVPN portal list'}
   tags: ['all']
 
-- include_tasks: ./server-init.yml
+- include_tasks: ./server_init.yml
   when: ((['server_init'] | intersect(flags)) | length > 0)
   tags: ['server_init']
 
-- include_tasks: ./server-config.yml
+- include_tasks: ./server_config.yml
   when: ((['server_config'] | intersect(flags)) | length > 0)
   tags: ['server_config']
 
-- include_tasks: ./server-cert-generate.yml
+- include_tasks: ./server_cert_generate.yml
   when: ((['server_cert_gen'] | intersect(flags)) | length > 0)
   tags: ['server_cert_gen']
 
-- include_tasks: ./server-cert-pull.yml
+- include_tasks: ./client_cert_pull.yml
   when: ((['server_cert_pull'] | intersect(flags)) | length > 0)
   tags: ['server_cert_pull']
 
-- include_tasks: ./easy-ovpn-init.yml
+- include_tasks: ./easy_ovpn_init.yml
   when: ((['easy_ovpn_init'] | intersect(flags)) | length > 0)
   tags: ['easy_ovpn_init']
 
-- include_tasks: ./client-cert-generate.yml
+- include_tasks: ./easy_ovpn_push_keys.yml
+  when: ((['easy_ovpn_push_keys'] | intersect(flags)) | length > 0)
+  tags: ['easy_ovpn_push_keys']
+
+- include_tasks: ./client_cert_generate.yml
   when: ((['client_cert_gen'] | intersect(flags)) | length > 0)
   tags: ['client_cert_gen']
 
-- include_tasks: ./client-cert-sync.yml
+- include_tasks: ./client_cert_sync.yml
   when: ((['client_cert_sync'] | intersect(flags)) | length > 0)
   tags: ['client_cert_sync']
 
@@ -42,10 +46,10 @@
   when: ((['client_cert_pull'] | intersect(flags)) | length > 0)
   tags: ['client_cert_pull']
 
-- include_tasks: ./easy-ovpn-kill.yml
+- include_tasks: ./easy_ovpn_kill.yml
   when: ((['easy_ovpn_kill'] | intersect(flags)) | length > 0)
   tags: ['easy_ovpn_kill']
 
-- include_tasks: ./client-deploy.yml
+- include_tasks: ./client_deploy.yml
   when: ((['client_deploy'] | intersect(flags)) | length > 0)
   tags: ['client_deploy']

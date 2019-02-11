@@ -1,7 +1,7 @@
 ---
 
 - name: Change Key Data
-  include_tasks: easy-ovpn-init.yml
+  include_tasks: easy_ovpn_init.yml
 
 - name: push script template
   template: 

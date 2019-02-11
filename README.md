@@ -52,10 +52,11 @@ server_init:         Server Initialization
 server_config:       Server Configuration
 server_cert_gen:     Server Certificate Generation
 server_cert_pull:    Server Certificate Pull
-easy_ovpn_init:      Initialize the Easy OpenVPN directoryu
+easy_ovpn_init:      Initialize the Easy OpenVPN directory
+easy_ovpn_push_keys: Push keys to the OpenVPN directory
 client_cert_gen:     Client Certificate Generation (specify only one portal machine)
 client_cert_sync:    Client Certificate synchronization between servers
-easy_ovpn_kill:      Kill the Easy OpenVPN directoryu
+easy_ovpn_kill:      Kill the Easy OpenVPN directory
 client_deploy:       Install the packages and the certificate on the client
 ```
 
@@ -74,6 +75,8 @@ client_deploy:       Install the packages and the certificate on the client
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_init']}" -t server_init
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_config']}" -t server_config
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['easy_ovpn_init']}" -t easy_ovpn_init
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['easy_ovpn_push_keys']}" -t easy_ovpn_push_keys
+ansible-playbook playbooks/openvpn.yml -e "{'flags': ['easy_ovpn_kill']}" -t easy_ovpn_kill
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_cert_gen']}" -t server_cert_gen
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['server_cert_pull']}" -t server_cert_pull
 ansible-playbook playbooks/openvpn.yml -e "{'flags': ['client_cert_gen'], 'target_host': 'localhost', 'local_hostname': 'myhost.local' }" -t client_cert_gen
