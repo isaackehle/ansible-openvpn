@@ -38,7 +38,7 @@ management localhost 7505
 # no subnet -- {{ hostvars[h].description }}
 {% elif hostvars[h].openvpn.netmask is undefined %}
 # no netmask -- {{ hostvars[h].description }}
-{% elif hostvars[h].openvpn.client != true %}
+{% elif hostvars[h].openvpn.destination == 'server' %}
 push "route {{ hostvars[h].openvpn.subnet }} {{ hostvars[h].openvpn.netmask }}" # {{ hostvars[h].description }}
 {% endif %}
 {% endif %}

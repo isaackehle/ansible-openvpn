@@ -24,8 +24,14 @@ tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-G
 {% if inventory_hostname == 'localhost' %}
 # Connected Systems for localhost client
 {% for h in groups.all %}
-{% if hostvars[h].openvpn is defined and hostvars[h].openvpn.subnet is defined and hostvars[h].openvpn.netmask is defined and hostvars[h].openvpn.client == true %}
+{% if hostvars[h].openvpn is defined %}
+{% if hostvars[h].openvpn.subnet is undefined %}
+# no subnet -- {{ hostvars[h].description }}
+{% elif hostvars[h].openvpn.netmask is undefined %}
+# no netmask -- {{ hostvars[h].description }}
+{% elif hostvars[h].openvpn.destination == 'client' %}
 route {{ hostvars[h].openvpn.subnet }} {{ hostvars[h].openvpn.netmask }} # {{ hostvars[h].description }}
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
