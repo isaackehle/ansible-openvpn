@@ -1,7 +1,6 @@
 ---
-
 - name: Kill old easy_ovpn directory before recreate
-  file: 
+  file:
     path: "{{ easy_ovpn_dir }}"
     state: absent
   become: true
@@ -11,24 +10,36 @@
   become: false
 
 - name: Change Key Data
-  lineinfile: 
-    dest: "{{ easy_ovpn_vars }}" 
-    regexp: "{{ item.needle }}" 
+  lineinfile:
+    dest: "{{ easy_ovpn_vars }}"
+    regexp: "{{ item.needle }}"
     line: "{{ item.line }}"
   become: false
   with_items:
-    - { needle: 'KEY_COUNTRY', line: 'export KEY_COUNTRY={{ cert_config.country }}' }
-    - { needle: 'KEY_PROVINCE', line: 'export KEY_PROVINCE={{ cert_config.state }}' }
-    - { needle: 'KEY_CITY', line: 'export KEY_CITY={{ cert_config.locality }}' }
-    - { needle: 'KEY_ORG', line: 'export KEY_ORG={{ cert_config.organization }}' }
-    - { needle: 'KEY_OU', line: 'export KEY_OU={{ cert_config.ou }}' }
-    - { needle: 'KEY_EMAIL', line: 'export KEY_EMAIL={{ cert_config.email }}' }
-    - { needle: 'KEY_NAME', line: 'export KEY_NAME={{ cert_config.dc }}' }
-    - { needle: 'KEY_CONFIG', line: 'export KEY_CONFIG={{ easy_ovpn_dir }}/openssl-1.0.0.cnf' }
+    - {
+        needle: "KEY_COUNTRY",
+        line: "export KEY_COUNTRY={{ cert_config.country }}",
+      }
+    - {
+        needle: "KEY_PROVINCE",
+        line: "export KEY_PROVINCE={{ cert_config.state }}",
+      }
+    - { needle: "KEY_CITY", line: "export KEY_CITY={{ cert_config.locality }}" }
+    - {
+        needle: "KEY_ORG",
+        line: "export KEY_ORG={{ cert_config.organization }}",
+      }
+    - { needle: "KEY_OU", line: "export KEY_OU={{ cert_config.ou }}" }
+    - { needle: "KEY_EMAIL", line: "export KEY_EMAIL={{ cert_config.email }}" }
+    - { needle: "KEY_NAME", line: "export KEY_NAME={{ cert_config.dc }}" }
+    - {
+        needle: "KEY_CONFIG",
+        line: "export KEY_CONFIG={{ easy_ovpn_dir }}/openssl-1.0.0.cnf",
+      }
 
 - name: Create {{ easy_ovpn_certs }}
-  file: 
-    path: "{{ easy_ovpn_certs }}" 
+  file:
+    path: "{{ easy_ovpn_certs }}"
     state: directory
   become: false
 
@@ -46,8 +57,8 @@
 #     dest: "{{ easy_ovpn_keys }}"
 
 - name: Put the client config template in place
-  template: 
-    src: ../templates/easy_ovpn/client.conf.j2 
+  template:
+    src: ../templates/easy_ovpn/client.conf.j2
     dest: "{{ easy_ovpn_dir }}/client.conf"
 
 - name: Set Permissions
@@ -59,4 +70,3 @@
     group: "{{ lookup('env','USER') }}"
     recurse: true
   become: true
-
