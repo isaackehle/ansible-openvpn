@@ -13,7 +13,7 @@ description:
 openvpn:
   subnet: aaa.bbb.ccc.ddd
   netmask: lll.mmm.nnn.ooo
-  client: true # or false
+  destination: 'client' # or 'server'
 ```
 
 Note: I found that even though the ansible documentation says that groups.all and groups.ungrouped will give you all of the servers, unless I added my connected systems to a group, the servers were not listed in either group.
