@@ -20,17 +20,17 @@
   set_fact:
     target_fqdn: "{{ local_hostname }}"
   connection: local
-  when: target_host == 'localhost' and local_hostname != ''
+  when: target_host == 'localhost' and local_hostname | length > 0
 
 - shell: hostname
   connection: local
   register: host_long
-  when: target_host == 'localhost' and local_hostname == ''
+  when: target_host == 'localhost' and local_hostname | length == 0
 
 - name: Set target_fqdn from host_long
   set_fact:
     target_fqdn: "{{ host_long.stdout }}"
-  when: target_host == 'localhost' and local_hostname == ''
+  when: target_host == 'localhost' and local_hostname | length == 0
 
 - name: Set certificate filename
   set_fact:

@@ -47,7 +47,7 @@
   when: ((['client_cert_sync'] | intersect(flags)) | length > 0)
   tags: ["client_cert_sync"]
 
-- include_tasks: ./client-cert-pull.yml
+- include_tasks: ./client_cert_pull.yml
   when: ((['client_cert_pull'] | intersect(flags)) | length > 0)
   tags: ["client_cert_pull"]
 
