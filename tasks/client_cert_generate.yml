@@ -3,7 +3,7 @@
   fail:
     msg: "Please ensure '{{ item.use }}' is set"
   when:
-    - not item is defined or not item.tst is defined or item.tst == ""
+    - not item is defined or not item.tst is defined or item.tst | length == 0
   with_items:
     - { tst: target_host, use: "Target Host Variable" }
 
