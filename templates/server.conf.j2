@@ -17,9 +17,12 @@ tls-cipher "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-G
 allow-pull-fqdn
 
 # DNS Entries
-{% for s in dns_servers %}
-push "dhcp-option DNS {{ s.network.ip }}" # {{ s.description }}
+{% for host in groups.dns_servers %}
+{% if hostvars[host].ip_address is defined %}
+# push "dhcp-option DNS {{ hostvars[host].ip_address }}" # {{ hostvars[host].description }}
+{% endif %}
 {% endfor %}
+
 
 # If enabled, this directive will configure all clients to redirect their default
 # network gateway through the VPN, causing all IP traffic such as web browsing and and DNS lookups to go through the VPN
