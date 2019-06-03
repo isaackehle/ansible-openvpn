@@ -1,8 +1,6 @@
 ---
-
 - name: Kill old easy_ovpn directory
-  file: 
-    path: "{{ easy_ovpn_dir }}" 
+  file:
+    path: "{{ easy_ovpn_dir }}"
     state: absent
   become: true
-

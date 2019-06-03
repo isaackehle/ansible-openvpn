@@ -1,14 +1,12 @@
 ---
-
 - name: Change Key Data
   include_tasks: easy_ovpn_init.yml
 
 - name: push script template
-  template: 
-    src: ../templates/server_gen.sh.j2 
+  template:
+    src: ../templates/server_gen.sh.j2
     dest: /tmp/server_gen.sh
   become: false
-
 # TODO: Not fully tested
 
 #- name: Enable packet forwarding
@@ -16,8 +14,8 @@
 #  become: true
 #
 #- name: Create server key directory
-#  file: 
-#   path: "{{ ovpn_keys_dir }}" 
+#  file:
+#   path: "{{ ovpn_keys_dir }}"
 #   state: present
 #  become: true
 #

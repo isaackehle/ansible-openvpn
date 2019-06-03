@@ -1,55 +1,60 @@
 ---
-
 - name: Ensure Required Items
-  fail: 
+  fail:
     msg: "Please ensure '{{ item.use }}' is set"
   when:
-    - not item is defined or not item.tst is defined or item.tst == ""
+    - not item is defined or not item.tst is defined or item.tst | length == 0
   with_items:
-    - {tst: vpn_server_group_name, use: 'Ansible Group Name of portal servers'}
-    - {tst: target_servers, use: 'List of servers to be added to OpenVPN portal list'}
-  tags: ['all']
+    - {
+        tst: vpn_server_group_name,
+        use: "Ansible Group Name of portal servers",
+      }
+    - {
+        tst: target_servers,
+        use: "List of servers to be added to OpenVPN portal list",
+      }
+  tags: ["all"]
 
 - include_tasks: ./server_init.yml
   when: ((['server_init'] | intersect(flags)) | length > 0)
-  tags: ['server_init']
+  tags: ["server_init"]
 
 - include_tasks: ./server_config.yml
   when: ((['server_config'] | intersect(flags)) | length > 0)
-  tags: ['server_config']
+  tags: ["server_config"]
 
 - include_tasks: ./server_cert_generate.yml
   when: ((['server_cert_gen'] | intersect(flags)) | length > 0)
-  tags: ['server_cert_gen']
+  tags: ["server_cert_gen"]
 
 - include_tasks: ./client_cert_pull.yml
   when: ((['server_cert_pull'] | intersect(flags)) | length > 0)
-  tags: ['server_cert_pull']
+  tags: ["server_cert_pull"]
 
 - include_tasks: ./easy_ovpn_init.yml
   when: ((['easy_ovpn_init'] | intersect(flags)) | length > 0)
-  tags: ['easy_ovpn_init']
+  tags: ["easy_ovpn_init"]
 
 - include_tasks: ./easy_ovpn_push_keys.yml
   when: ((['easy_ovpn_push_keys'] | intersect(flags)) | length > 0)
-  tags: ['easy_ovpn_push_keys']
+  tags: ["easy_ovpn_push_keys"]
 
 - include_tasks: ./client_cert_generate.yml
   when: ((['client_cert_gen'] | intersect(flags)) | length > 0)
-  tags: ['client_cert_gen']
+  tags: ["client_cert_gen"]
 
 - include_tasks: ./client_cert_sync.yml
   when: ((['client_cert_sync'] | intersect(flags)) | length > 0)
-  tags: ['client_cert_sync']
+  tags: ["client_cert_sync"]
 
-- include_tasks: ./client-cert-pull.yml
+- include_tasks: ./client_cert_pull.yml
   when: ((['client_cert_pull'] | intersect(flags)) | length > 0)
-  tags: ['client_cert_pull']
+  tags: ["client_cert_pull"]
 
 - include_tasks: ./easy_ovpn_kill.yml
   when: ((['easy_ovpn_kill'] | intersect(flags)) | length > 0)
-  tags: ['easy_ovpn_kill']
+  tags: ["easy_ovpn_kill"]
 
 - include_tasks: ./client_deploy.yml
   when: ((['client_deploy'] | intersect(flags)) | length > 0)
-  tags: ['client_deploy']
+  tags: ["client_deploy"]

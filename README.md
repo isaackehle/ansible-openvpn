@@ -23,8 +23,8 @@ Host Definitions typically contain the following:
 ```yaml
 vpn_server_group_name   Name of Ansible group of servers that are configured as OpenVPN portals (default = 'portals')
 
-dns_servers             Listing of DNS servers that are published when the client is connected
-
+dns_servers             Inventory Group that will be included in dns list
+                        Inventory entry must also have an ip_address variable
 cert_config
     cn
     country         Country for the cert
@@ -66,7 +66,6 @@ client_deploy:       Install the packages and the certificate on the client
 - hosts: all
     vars:
         target_servers: []
-        dns_servers:    []
     roles:
       - { name: pgkehle.openvpn }
 ```
