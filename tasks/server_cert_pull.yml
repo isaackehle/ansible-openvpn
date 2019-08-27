@@ -3,7 +3,7 @@
   file:
     path: "{{ ovpn_base }}/server"
     state: directory
-  connection: local
+  delegate_to: localhost
 
 - name: Copy files to local directory
   synchronize:

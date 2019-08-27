@@ -19,11 +19,11 @@
 - name: Set target_fqdn from local_hostname when set
   set_fact:
     target_fqdn: "{{ local_hostname }}"
-  connection: local
+  delegate_to: localhost
   when: target_host == 'localhost' and local_hostname | length > 0
 
 - shell: hostname
-  connection: local
+  delegate_to: localhost
   register: host_long
   when: target_host == 'localhost' and local_hostname | length == 0
 
@@ -37,7 +37,7 @@
     cert_filename: "{{ target_fqdn }}.ovpn"
 
 - name: Check to see if file exists
-  connection: local
+  delegate_to: localhost
   stat:
     path: "{{ ovpn_base }}/certs/{{ cert_filename }}"
   register: cert_stat
@@ -150,7 +150,7 @@
   file:
     path: "{{ ovpn_base }}/certs"
     state: directory
-  connection: local
+  delegate_to: localhost
   when: need_generate
 
 - name: Pull the certificate file to localhost
