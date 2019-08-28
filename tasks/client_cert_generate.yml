@@ -13,7 +13,7 @@
 
 - name: Set target_fqdn when target_host is not localhost
   set_fact:
-    target_fqdn: "{{ target_vars.server_fqdn }}"
+    target_fqdn: "{{ target_vars.fqdn }}"
   when: target_host != 'localhost'
 
 - name: Set target_fqdn from local_hostname when set

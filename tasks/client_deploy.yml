@@ -8,8 +8,8 @@
 
 - name: Basic Facts
   set_fact:
-    cert_filename: "{{ server_fqdn }}.ovpn"
-    client_file: "/etc/openvpn/{{ server_fqdn }}.conf"
+    cert_filename: "{{ fqdn }}.ovpn"
+    client_file: "/etc/openvpn/{{ fqdn }}.conf"
 
 - name: copy certificate file to target
   become: true

@@ -3,7 +3,7 @@ dev tun
 proto udp
 
 {% for h in groups[vpn_server_group_name]  %}
-remote {{ hostvars[h].server_fqdn }} 1194
+remote {{ hostvars[h].fqdn }} 1194
 {% endfor %}
 
 remote-random
