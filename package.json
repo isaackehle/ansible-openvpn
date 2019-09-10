@@ -1,6 +1,6 @@
 {
   "name": "ansible-openvpn",
-  "version": "1.0.14",
+  "version": "2.0.0",
   "description": "Installation and Configuring of OpenVPN",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
