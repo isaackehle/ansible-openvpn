@@ -26,16 +26,14 @@ vpn_server_group_name   Name of Ansible group of servers that are configured as 
 dns_servers             Inventory Group that will be included in dns list
                         Inventory entry must also have an ip_address variable
 cert_config
-    cn
-    country         Country for the cert
-    locality        Locality for the cert
-    state           State for the cert
-    organization    Organization for the cert
-    ou              Organizational Unit for the cert
-    email           Email for the cert
-    cn              Common name for the cert, usually fqdn
-    dc              Domain Component for the cert, if any
-
+    country         Country
+    locality        Locality
+    state           State
+    organization    Organization
+    ou              Organizational Unit
+    email           Email
+    cn              Common name, usually fqdn
+    dc              Domain Component, if any
 ```
 
 ## Tags/Flags
