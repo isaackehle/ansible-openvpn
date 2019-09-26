@@ -52,6 +52,7 @@ server_cert_gen:     Server Certificate Generation
 server_cert_pull:    Server Certificate Pull
 easy_ovpn_init:      Initialize the Easy OpenVPN directory
 easy_ovpn_push_keys: Push keys to the OpenVPN directory
+easy_ovpn_pull_keys: Pull keys from the OpenVPN directory
 client_cert_gen:     Client Certificate Generation (specify only one portal machine)
 client_cert_sync:    Client Certificate synchronization between servers
 easy_ovpn_kill:      Kill the Easy OpenVPN directory

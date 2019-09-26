@@ -1,5 +1,5 @@
 ---
-- name: Change Key Data
+- name: Run the EasyRSA Init Script
   include_tasks: easy_ovpn_init.yml
 
 - name: push script template

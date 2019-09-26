@@ -39,20 +39,14 @@
 - name: Check to see if file exists
   delegate_to: localhost
   stat:
-    path: "{{ ovpn_base }}/certs/{{ cert_filename }}"
+    path: "{{ local_ovpn_base }}/certs/{{ cert_filename }}"
   register: cert_stat
 
 - name: Determine if the generation is needed
   set_fact:
     need_generate: "{{ not cert_stat.stat.exists or force }}"
 
-- name: Synchronize keys from {{ ovpn_keys_dir_local }} to {{ easy_ovpn_keys }}
-  become: true
-  synchronize:
-    mode: push
-    delete: true
-    src: "{{ ovpn_keys_dir_local }}/"
-    dest: "{{ easy_ovpn_keys }}"
+- include_tasks: ./easy_ovpn_push_keys.yml
   when: need_generate
 
 - name: Push the client key script
@@ -61,7 +55,7 @@
     dest: "/tmp/client_gen.sh"
   when: need_generate
 
-- name: run the client key script
+- name: Run the client key script
   shell: bash /tmp/client_gen.sh
   when: need_generate
 
@@ -148,23 +142,18 @@
 
 - name: Ensure local private certs directory exists
   file:
-    path: "{{ ovpn_base }}/certs"
+    path: "{{ local_ovpn_base }}/certs"
     state: directory
   delegate_to: localhost
   when: need_generate
 
 - name: Pull the certificate file to localhost
   synchronize:
-    src: "{{ easy_ovpn_certs }}/{{ cert_filename }}"
-    dest: "{{ ovpn_base }}/certs/{{ cert_filename }}"
     mode: pull
+    src: "{{ easy_ovpn_certs }}/{{ cert_filename }}"
+    dest: "{{ local_ovpn_base }}/certs/{{ cert_filename }}"
   become: true
   when: need_generate
 
-- name: copy updated keys directory to local
-  become: true
+- include_tasks: ./easy_ovpn_pull_keys.yml
   when: need_generate
-  synchronize:
-    src: "{{ easy_ovpn_keys }}/"
-    dest: "{{ ovpn_keys_dir_local }}"
-    mode: pull

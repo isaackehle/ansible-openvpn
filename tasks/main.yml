@@ -39,6 +39,10 @@
   when: ((['easy_ovpn_push_keys'] | intersect(flags)) | length > 0)
   tags: ["easy_ovpn_push_keys"]
 
+- include_tasks: ./easy_ovpn_pull_keys.yml
+  when: ((['easy_ovpn_pull_keys'] | intersect(flags)) | length > 0)
+  tags: ["easy_ovpn_pull_keys"]
+
 - include_tasks: ./client_cert_generate.yml
   when: ((['client_cert_gen'] | intersect(flags)) | length > 0)
   tags: ["client_cert_gen"]
