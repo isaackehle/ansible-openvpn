@@ -22,7 +22,8 @@
   delegate_to: localhost
   when: target_host == 'localhost' and local_hostname | length > 0
 
-- shell: hostname
+- name: Get the hostname of the local host when the target host is local
+  command: hostname
   delegate_to: localhost
   register: host_long
   when: target_host == 'localhost' and local_hostname | length == 0
@@ -46,21 +47,21 @@
   set_fact:
     need_generate: "{{ not cert_stat.stat.exists or force }}"
 
-- include_tasks: ./easy_ovpn_push_keys.yml
+- include_tasks: easy_ovpn_push_keys.yml
   when: need_generate
 
 - name: Push the client key script
   template:
-    src: ../templates/easy_ovpn/client_gen.sh.j2
+    src: templates/easy_ovpn/client_gen.sh.j2
     dest: "/tmp/client_gen.sh"
   when: need_generate
 
 - name: Run the client key script
-  shell: bash /tmp/client_gen.sh
+  command: bash /tmp/client_gen.sh
   when: need_generate
 
 - name: Generate client cert -- Start with "client.conf"
-  shell: cp {{ easy_ovpn_dir }}/client.conf {{ easy_ovpn_certs }}/{{ cert_filename }}
+  command: cp {{ easy_ovpn_dir }}/client.conf {{ easy_ovpn_certs }}/{{ cert_filename }}
   when: need_generate
   become: true
 
@@ -155,5 +156,5 @@
   become: true
   when: need_generate
 
-- include_tasks: ./easy_ovpn_pull_keys.yml
+- include_tasks: easy_ovpn_pull_keys.yml
   when: need_generate

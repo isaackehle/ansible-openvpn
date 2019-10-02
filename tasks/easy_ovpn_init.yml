@@ -7,7 +7,8 @@
 
 - name: Create the easy_ovpn directory
   command: make-cadir "{{ easy_ovpn_dir }}"
-  become: false
+  register: cadirout
+  changed_when: cadirout.stderr_lines | length == 0
 
 - name: Set the Key Generation Variables
   lineinfile:
@@ -62,11 +63,11 @@
 #     src: "{{ local_ovpn_keys }}"
 #     dest: "{{ easy_ovpn_keys }}"
 
-- include_tasks: ./easy_ovpn_push_keys.yml
+- include_tasks: easy_ovpn_push_keys.yml
 
 - name: Put the client config template in place
   template:
-    src: ../templates/easy_ovpn/client.conf.j2
+    src: templates/easy_ovpn/client.conf.j2
     dest: "{{ easy_ovpn_dir }}/client.conf"
 
 - name: Set Permissions

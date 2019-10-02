@@ -4,7 +4,7 @@
 
 - name: push script template
   template:
-    src: ../templates/server_gen.sh.j2
+    src: templates/server_gen.sh.j2
     dest: /tmp/server_gen.sh
   become: false
 # TODO: Not fully tested
