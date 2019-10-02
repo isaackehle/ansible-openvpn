@@ -20,20 +20,26 @@ Note: I found that even though the ansible documentation says that groups.all an
 
 Host Definitions typically contain the following:
 
-```yaml
-vpn_server_group_name   Name of Ansible group of servers that are configured as OpenVPN portals (default = 'portals')
+```bash
+# Inventory Group that will be included in dns list Inventory entry must also have an ip_address variable
+[dns_servers]
+server1.domain.com
+server2.domain.com
+```
 
-dns_servers             Inventory Group that will be included in dns list
-Inventory entry must also have an ip_address variable
-cert_config
-country         Country
-locality        Locality
-state           State
-organization    Organization
-ou              Organizational Unit
-email           Email
-cn              Common name, usually fqdn
-dc              Domain Component, if any
+```yaml
+# Name of Ansible Inventory Group of servers that are configured as OpenVPN portals (default = 'portals')
+vpn_server_group_name: "portals"
+
+cert_config:
+  country: US                 # Country
+  locality: Miami             # Locality
+  state: FL                   # State
+  organization: My Company    # Organization
+  ou: My Group                # Organizational Unit
+  email: admin@company.com    # Email
+  cn: CN                      # Common name, usually fqdn
+  dc: DC                      # Domain Component, if any
 ```
 
 ## Tags/Flags
@@ -45,6 +51,8 @@ As an example:
 ansible-playbook playbooks/openvpn.yml --limit portals -e "{'flags': ['server_config']}" -t server_config
 ```
 
+| Flag | Purpose |
+| -- | -- |
 | server_init | Server Initialization |
 | server_config | Server Configuration |
 | server_cert_gen | Server Certificate Generation |
