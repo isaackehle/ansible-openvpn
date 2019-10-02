@@ -1,0 +1,17 @@
+---
+- name: Synchronize keys from {{ easy_ovpn_keys }} directory to {{ local_ovpn_base }}
+  become: true
+  synchronize:
+    mode: pull
+    src: "{{ easy_ovpn_keys }}"
+    dest: "{{ local_ovpn_base }}"
+
+- name: Set Permissions
+  file:
+    path: "{{ local_ovpn_base }}"
+    state: directory
+    mode: 0775
+    owner: "{{ lookup('env','USER') }}"
+    group: "{{ lookup('env','USER') }}"
+    recurse: true
+  become: true

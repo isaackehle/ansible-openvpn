@@ -1,10 +1,10 @@
 ---
-- name: Change Key Data
+- name: Run the EasyRSA Init Script
   include_tasks: easy_ovpn_init.yml
 
 - name: push script template
   template:
-    src: ../templates/server_gen.sh.j2
+    src: templates/server_gen.sh.j2
     dest: /tmp/server_gen.sh
   become: false
 # TODO: Not fully tested

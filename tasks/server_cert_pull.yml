@@ -1,14 +1,14 @@
 ---
 - name: Create local directory
   file:
-    path: "{{ ovpn_base }}/server"
+    path: "{{ local_ovpn_base }}/server"
     state: directory
   delegate_to: localhost
 
 - name: Copy files to local directory
   synchronize:
     src: "{{ ovpn_keys_dir }}/{{ item }}"
-    dest: "{{ ovpn_base }}/server/{{ item }}"
+    dest: "{{ local_ovpn_base }}/server/{{ item }}"
     mode: pull
   become: true
   with_items:

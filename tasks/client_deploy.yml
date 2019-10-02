@@ -14,7 +14,7 @@
 - name: copy certificate file to target
   become: true
   copy:
-    src: "{{ ovpn_base }}/certs/{{ cert_filename }}"
+    src: "{{ local_ovpn_base }}/certs/{{ cert_filename }}"
     dest: "{{ client_file }}"
     owner: root
     group: root

@@ -7,9 +7,10 @@
 
 - name: Create the easy_ovpn directory
   command: make-cadir "{{ easy_ovpn_dir }}"
-  become: false
+  register: cadirout
+  changed_when: cadirout.stderr_lines | length == 0
 
-- name: Change Key Data
+- name: Set the Key Generation Variables
   lineinfile:
     dest: "{{ easy_ovpn_vars }}"
     regexp: "{{ item.needle }}"
@@ -18,23 +19,29 @@
   with_items:
     - {
         needle: "KEY_COUNTRY",
-        line: "export KEY_COUNTRY={{ cert_config.country }}",
+        line: 'export KEY_COUNTRY="{{ cert_config.country }}"',
       }
     - {
         needle: "KEY_PROVINCE",
-        line: "export KEY_PROVINCE={{ cert_config.state }}",
+        line: 'export KEY_PROVINCE="{{ cert_config.state }}"',
       }
-    - { needle: "KEY_CITY", line: "export KEY_CITY={{ cert_config.locality }}" }
+    - {
+        needle: "KEY_CITY",
+        line: 'export KEY_CITY="{{ cert_config.locality }}"',
+      }
     - {
         needle: "KEY_ORG",
-        line: "export KEY_ORG={{ cert_config.organization }}",
+        line: 'export KEY_ORG="{{ cert_config.organization }}"',
       }
-    - { needle: "KEY_OU", line: "export KEY_OU={{ cert_config.ou }}" }
-    - { needle: "KEY_EMAIL", line: "export KEY_EMAIL={{ cert_config.email }}" }
-    - { needle: "KEY_NAME", line: "export KEY_NAME={{ cert_config.dc }}" }
+    - { needle: "KEY_OU", line: 'export KEY_OU="{{ cert_config.ou }}"' }
+    - {
+        needle: "KEY_EMAIL",
+        line: 'export KEY_EMAIL="{{ cert_config.email }}"',
+      }
+    - { needle: "KEY_NAME", line: 'export KEY_NAME="{{ cert_config.dc }}"' }
     - {
         needle: "KEY_CONFIG",
-        line: "export KEY_CONFIG={{ easy_ovpn_dir }}/openssl-1.0.0.cnf",
+        line: 'export KEY_CONFIG="{{ easy_ovpn_dir }}/openssl-1.0.0.cnf"',
       }
 
 - name: Create {{ easy_ovpn_certs }}
@@ -43,22 +50,24 @@
     state: directory
   become: false
 
-- name: Synchronize the keys directory on the server
-  synchronize:
-    src: "{{ ovpn_keys_dir }}"
-    dest: "{{ easy_ovpn_dir }}"
-  delegate_to: "{{ inventory_hostname }}"
-  become: true
+# - name: Synchronize the keys directory on the server
+#   synchronize:
+#     src: "{{ ovpn_keys_dir }}"
+#     dest: "{{ easy_ovpn_dir }}"
+#   delegate_to: "{{ inventory_hostname }}"
+#   become: true
 
 # - name: Push the local keys directory to {{ easy_ovpn_dir }}
 #   synchronize:
 #     mode: push
-#     src: "{{ ovpn_keys_dir_local }}/"
+#     src: "{{ local_ovpn_keys }}"
 #     dest: "{{ easy_ovpn_keys }}"
+
+- include_tasks: easy_ovpn_push_keys.yml
 
 - name: Put the client config template in place
   template:
-    src: ../templates/easy_ovpn/client.conf.j2
+    src: templates/easy_ovpn/client.conf.j2
     dest: "{{ easy_ovpn_dir }}/client.conf"
 
 - name: Set Permissions

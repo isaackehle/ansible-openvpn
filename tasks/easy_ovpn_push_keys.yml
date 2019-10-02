@@ -1,17 +1,20 @@
 ---
-- name: Push the local keys directory to {{ easy_ovpn_dir }}
+- name: Synchronize keys from {{ local_ovpn_keys }} to {{ easy_ovpn_dir }}
+  become: true
   synchronize:
-        mode: push
-        delete: true
-        src: "{{ ovpn_keys_dir_local }}/"
-        dest: "{{ easy_ovpn_keys }}"
+    mode: push
+    recursive: yes
+    delete: yes
+    src: "{{ local_ovpn_keys }}"
+    dest: "{{ easy_ovpn_dir }}"
+  register: rsync_result
 
 - name: Set Permissions
   file:
-        path: "{{ easy_ovpn_dir }}"
-        state: directory
-        mode: 0775
-        owner: "{{ lookup('env','USER') }}"
-        group: "{{ lookup('env','USER') }}"
-        recurse: true
+    path: "{{ easy_ovpn_dir }}"
+    state: directory
+    mode: 0775
+    owner: "{{ lookup('env','USER') }}"
+    group: "{{ lookup('env','USER') }}"
+    recurse: true
   become: true
