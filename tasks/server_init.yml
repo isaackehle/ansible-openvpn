@@ -62,4 +62,3 @@
   changed_when: fwall.changed
   with_items:
     - ufw enable
-
