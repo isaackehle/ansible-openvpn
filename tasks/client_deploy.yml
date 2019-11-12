@@ -29,6 +29,6 @@
   with_items:
     - { needle: '#AUTOSTART="all"', line: 'AUTOSTART="all"' }
 
-- name: restart the VM
+- name: Restart the instance
   include_role:
     name: pgkehle.restart
