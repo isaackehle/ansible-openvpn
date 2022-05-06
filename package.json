@@ -1,6 +1,6 @@
 {
   "name": "ansible-openvpn",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "Installation and Configuring of OpenVPN",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pgkehle/ansible-openvpn.git"
+    "url": "git+https://github.com/isaackehle/ansible-openvpn.git"
   },
-  "author": "Paul Kehle (pgkehle@gmail.com)",
+  "author": "Isaac Kehle (isaac@kehle.org)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pgkehle/ansible-openvpn/issues"
+    "url": "https://github.com/isaackehle/ansible-openvpn/issues"
   },
-  "homepage": "https://github.com/pgkehle/ansible-openvpn#readme",
+  "homepage": "https://github.com/isaackehle/ansible-openvpn#readme",
   "main": "tasks/main.yml",
   "keywords": [
     "ansible"

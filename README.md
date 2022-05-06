@@ -2,7 +2,7 @@
 
 Installation and Configuring of OpenVPN
 
-Available on Ansible Galaxy: [pgkehle.openvpn](https://galaxy.ansible.com/pgkehle/openvpn)
+Available on Ansible Galaxy: [isaackehle.openvpn](https://galaxy.ansible.com/isaackehle/openvpn)
 
 ## Variables
 
@@ -32,14 +32,14 @@ server2.domain.com
 vpn_server_group_name: "portals"
 
 cert_config:
-  country: US                 # Country
-  locality: Miami             # Locality
-  state: FL                   # State
-  organization: My Company    # Organization
-  ou: My Group                # Organizational Unit
-  email: admin@company.com    # Email
-  cn: CN                      # Common name, usually fqdn
-  dc: DC                      # Domain Component, if any
+  country: US # Country
+  locality: Miami # Locality
+  state: FL # State
+  organization: My Company # Organization
+  ou: My Group # Organizational Unit
+  email: admin@company.com # Email
+  cn: CN # Common name, usually fqdn
+  dc: DC # Domain Component, if any
 ```
 
 ## Tags/Flags
@@ -51,19 +51,19 @@ As an example:
 ansible-playbook playbooks/openvpn.yml --limit portals -e "{'flags': ['server_config']}" -t server_config
 ```
 
-| Flag | Purpose |
-| -- | -- |
-| server_init | Server Initialization |
-| server_config | Server Configuration |
-| server_cert_gen | Server Certificate Generation |
-| server_cert_pull | Server Certificate Pull |
-| easy_ovpn_init | Initialize the Easy OpenVPN directory |
-| easy_ovpn_push_keys | Push keys to the OpenVPN directory |
-| easy_ovpn_pull_keys | Pull keys from the OpenVPN directory |
-| client_cert_gen | Client Certificate Generation (specify only one portal machine) |
-| client_cert_sync | Client Certificate synchronization between servers |
-| easy_ovpn_kill | Kill the Easy OpenVPN directory |
-| client_deploy | Install the packages and the certificate on the client |
+| Flag                | Purpose                                                         |
+| ------------------- | --------------------------------------------------------------- |
+| server_init         | Server Initialization                                           |
+| server_config       | Server Configuration                                            |
+| server_cert_gen     | Server Certificate Generation                                   |
+| server_cert_pull    | Server Certificate Pull                                         |
+| easy_ovpn_init      | Initialize the Easy OpenVPN directory                           |
+| easy_ovpn_push_keys | Push keys to the OpenVPN directory                              |
+| easy_ovpn_pull_keys | Pull keys from the OpenVPN directory                            |
+| client_cert_gen     | Client Certificate Generation (specify only one portal machine) |
+| client_cert_sync    | Client Certificate synchronization between servers              |
+| easy_ovpn_kill      | Kill the Easy OpenVPN directory                                 |
+| client_deploy       | Install the packages and the certificate on the client          |
 
 ## Examples
 
@@ -72,7 +72,7 @@ ansible-playbook playbooks/openvpn.yml --limit portals -e "{'flags': ['server_co
     vars:
         target_servers: []
     roles:
-      - { name: pgkehle.openvpn }
+      - { name: isaackehle.openvpn }
 ```
 
 ```bash
@@ -101,5 +101,5 @@ MIT
 
 ## Author Information
 
-Paul Kehle
-@pgkehle ([twitter](https://twitter.com/pgkehle), [github](https://github.com/pgkehle), [linkedin](https://www.linkedin.com/in/pgkehle))
+Isaac Kehle
+@isaackehle ([twitter](https://twitter.com/isaackehle), [github](https://github.com/isaackehle), [linkedin](https://www.linkedin.com/in/isaackehle))
